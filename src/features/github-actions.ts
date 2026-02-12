@@ -1,0 +1,80 @@
+import type { ProjectContext } from '../context.js';
+import { logger } from '../utils/logger.js';
+import { writeFile, joinPath, ensureDir } from '../utils/file.js';
+
+export async function setupGithubActions(context: ProjectContext): Promise<void> {
+  logger.step('Setting up GitHub Actions...');
+
+  try {
+    // Create .github/workflows directory
+    const workflowsDir = joinPath(context.projectPath, '.github', 'workflows');
+    await ensureDir(workflowsDir);
+
+    // Create CI workflow
+    await createCIWorkflow(context, workflowsDir);
+
+    logger.success('GitHub Actions configured');
+  } catch (error) {
+    logger.error('Failed to setup GitHub Actions');
+    throw error;
+  }
+}
+
+async function createCIWorkflow(context: ProjectContext, workflowsDir: string): Promise<void> {
+  const workflow = `name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js \${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: \${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      ${context.typescript ? `- name: Type check
+        run: npm run type-check
+` : ''}
+      - name: Lint
+        run: npm run lint
+
+      - name: Format check
+        run: npm run format:check
+
+      ${context.testing === 'vitest' ? `- name: Run tests
+        run: npm run test
+
+      - name: Generate coverage
+        run: npm run test:coverage
+` : ''}
+      - name: Build
+        run: npm run build
+
+      ${context.testing === 'vitest' ? `- name: Upload coverage reports
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage/coverage-final.json
+          flags: unittests
+          name: codecov-umbrella
+` : ''}
+`;
+
+  await writeFile(joinPath(workflowsDir, 'ci.yml'), workflow);
+}
