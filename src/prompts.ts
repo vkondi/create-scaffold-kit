@@ -47,10 +47,14 @@ export async function collectUserInput(projectName?: string): Promise<ProjectCon
   if (framework === 'react') {
     questions.push(
       {
-        type: 'confirm' as const,
+        type: 'select' as const,
         name: 'typescript',
         message: 'Use TypeScript?',
-        initial: true,
+        choices: [
+          { title: 'Yes', value: true },
+          { title: 'No', value: false },
+        ],
+        initial: 0,
       },
       {
         type: 'select' as const,
@@ -73,16 +77,21 @@ export async function collectUserInput(projectName?: string): Promise<ProjectCon
   // For Next.js, skip Tailwind prompt as create-next-app handles it
   if (framework === 'react') {
     questions.push({
-      type: 'confirm' as const,
+      type: 'select' as const,
       name: 'tailwind',
       message: 'Add Tailwind CSS?',
-      initial: false,
+      choices: [
+        { title: 'Yes', value: true },
+        { title: 'No', value: false },
+      ],
+      initial: 1,
     });
   } else {
     answers.tailwind = false; // Will be handled by create-next-app
   }
 
-  questions.push({
+  questions.push(
+    {
       type: 'select' as const,
       name: 'testing',
       message: 'Testing framework:',
@@ -93,16 +102,24 @@ export async function collectUserInput(projectName?: string): Promise<ProjectCon
       initial: 0,
     },
     {
-      type: 'confirm' as const,
+      type: 'select' as const,
       name: 'githubActions',
       message: 'Add GitHub Actions CI?',
-      initial: false,
+      choices: [
+        { title: 'Yes', value: true },
+        { title: 'No', value: false },
+      ],
+      initial: 1,
     },
     {
-      type: 'confirm' as const,
+      type: 'select' as const,
       name: 'docker',
       message: 'Add Docker setup?',
-      initial: false,
+      choices: [
+        { title: 'Yes', value: true },
+        { title: 'No', value: false },
+      ],
+      initial: 1,
     }
   );
 
