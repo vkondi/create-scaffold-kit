@@ -84,7 +84,7 @@ export async function collectUserInput(projectName?: string): Promise<ProjectCon
         { title: 'Yes', value: true },
         { title: 'No', value: false },
       ],
-      initial: 1,
+      initial: 0,
     });
   } else {
     answers.tailwind = false; // Will be handled by create-next-app
@@ -109,7 +109,7 @@ export async function collectUserInput(projectName?: string): Promise<ProjectCon
         { title: 'Yes', value: true },
         { title: 'No', value: false },
       ],
-      initial: 1,
+      initial: 0,
     },
     {
       type: 'select' as const,
