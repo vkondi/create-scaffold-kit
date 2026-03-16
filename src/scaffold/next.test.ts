@@ -26,7 +26,7 @@ describe('Next.js Project Scaffold', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(execa).mockResolvedValue({} as any);
+    vi.mocked(execa).mockResolvedValue({ isCanceled: false } as unknown as Awaited<ReturnType<typeof execa>>);
     vi.mocked(logger.step).mockImplementation(() => {});
     vi.mocked(logger.success).mockImplementation(() => {});
     vi.mocked(logger.error).mockImplementation(() => {});
@@ -169,14 +169,14 @@ describe('Next.js Project Scaffold', () => {
     it('should make execa call with stdio inherit property', async () => {
       await scaffoldNext(mockContext);
 
-      const call = vi.mocked(execa).mock.calls[0] as any[];
+      const call = vi.mocked(execa).mock.calls[0] as unknown[];
       expect(call[2]).toHaveProperty('stdio', 'inherit');
     });
 
     it('should make execa call with cwd set to process.cwd()', async () => {
       await scaffoldNext(mockContext);
 
-      const call = vi.mocked(execa).mock.calls[0] as any[];
+      const call = vi.mocked(execa).mock.calls[0] as unknown[];
       expect(call[2]).toHaveProperty('cwd');
     });
 

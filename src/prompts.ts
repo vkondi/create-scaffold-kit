@@ -1,4 +1,4 @@
-import prompts from 'prompts';
+import prompts, { type PromptObject } from 'prompts';
 import type { ProjectContext } from './context.js';
 import { logger } from './utils/logger.js';
 import { pathExists } from './utils/file.js';
@@ -8,7 +8,7 @@ export async function collectUserInput(projectName?: string): Promise<ProjectCon
   logger.info('Welcome to create-vkondi-app! 🚀');
   logger.newLine();
 
-  let questions: any[] = [];
+  let questions: PromptObject<string>[] = [];
 
   if (!projectName) {
     questions.push({
@@ -32,7 +32,7 @@ export async function collectUserInput(projectName?: string): Promise<ProjectCon
   });
 
   // Get project name and framework first
-  let answers = await prompts(questions, {
+  const answers = await prompts(questions, {
     onCancel: () => {
       logger.error('Operation cancelled');
       process.exit(1);

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import prompts from 'prompts';
+import prompts, { type PromptObject, type Options } from 'prompts';
 import { collectUserInput } from './prompts';
 import * as loggerModule from './utils/logger';
 import * as fileModule from './utils/file';
@@ -276,10 +276,12 @@ describe('Prompts Module', () => {
         throw new Error('process.exit');
       });
 
-      vi.mocked(prompts).mockImplementationOnce(async (_questions: any, config: any) => {
-        config.onCancel();
-        return {};
-      });
+      vi.mocked(prompts).mockImplementationOnce(
+        async (_questions: PromptObject<string> | PromptObject<string>[], config?: Options) => {
+          config?.onCancel?.({} as PromptObject<string>, {});
+          return {};
+        }
+      );
 
       await expect(collectUserInput()).rejects.toThrow('process.exit');
 

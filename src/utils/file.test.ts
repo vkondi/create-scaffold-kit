@@ -64,7 +64,7 @@ describe('File Utils', () => {
   describe('readFile', () => {
     it('should read file content', async () => {
       const content = 'file content';
-      vi.mocked(fs.readFile).mockResolvedValueOnce(content as any);
+      vi.mocked(fs.readFile).mockResolvedValueOnce(content as unknown as void);
       
       const result = await readFile('/test/file.txt');
       
@@ -73,7 +73,7 @@ describe('File Utils', () => {
     });
 
     it('should return empty string for empty files', async () => {
-      vi.mocked(fs.readFile).mockResolvedValueOnce('' as any);
+      vi.mocked(fs.readFile).mockResolvedValueOnce('' as unknown as void);
       
       const result = await readFile('/test/empty.txt');
       
@@ -93,7 +93,7 @@ describe('File Utils', () => {
 
   describe('pathExists', () => {
     it('should return true if path exists', async () => {
-      vi.mocked(fs.pathExists).mockResolvedValueOnce(true as any);
+      vi.mocked(fs.pathExists).mockResolvedValueOnce(true as unknown as void);
       
       const result = await pathExists('/existing/path');
       
@@ -101,7 +101,7 @@ describe('File Utils', () => {
     });
 
     it('should return false if path does not exist', async () => {
-      vi.mocked(fs.pathExists).mockResolvedValueOnce(false as any);
+      vi.mocked(fs.pathExists).mockResolvedValueOnce(false as unknown as void);
       
       const result = await pathExists('/nonexistent/path');
       
@@ -151,7 +151,7 @@ describe('File Utils', () => {
   describe('readJsonFile', () => {
     it('should read and parse JSON file', async () => {
       const jsonContent = JSON.stringify({ name: 'test', version: '1.0.0' });
-      vi.mocked(fs.readFile).mockResolvedValueOnce(jsonContent as any);
+      vi.mocked(fs.readFile).mockResolvedValueOnce(jsonContent as unknown as void);
       
       const result = await readJsonFile<{ name: string; version: string }>('/test/package.json');
       
@@ -160,7 +160,7 @@ describe('File Utils', () => {
     });
 
     it('should throw on invalid JSON', async () => {
-      vi.mocked(fs.readFile).mockResolvedValueOnce('invalid json {' as any);
+      vi.mocked(fs.readFile).mockResolvedValueOnce('invalid json {' as unknown as void);
       
       await expect(readJsonFile('/test/invalid.json')).rejects.toThrow();
     });
@@ -171,7 +171,7 @@ describe('File Utils', () => {
         scripts: { test: 'vitest', build: 'tsc' },
         dependencies: { react: '^18.0.0' },
       };
-      vi.mocked(fs.readFile).mockResolvedValueOnce(JSON.stringify(complexData) as any);
+      vi.mocked(fs.readFile).mockResolvedValueOnce(JSON.stringify(complexData) as unknown as void);
       
       const result = await readJsonFile('/test/package.json');
       

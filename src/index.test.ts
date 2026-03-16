@@ -53,7 +53,6 @@ describe('CLI Main Module', () => {
     // Setup default mock implementations
     vi.mocked(collectUserInput).mockResolvedValueOnce({
       ...mockContext,
-      packageManager: null as any,
     });
     vi.mocked(detectPackageManager).mockResolvedValueOnce('npm');
     vi.mocked(logger.info).mockImplementation(() => {});
@@ -109,7 +108,6 @@ describe('CLI Main Module', () => {
       };
       vi.mocked(collectUserInput).mockResolvedValueOnce({
         ...contextReact,
-        packageManager: null as any,
       });
       
       expect(vi.mocked(scaffoldReact)).toBeDefined();
@@ -122,7 +120,6 @@ describe('CLI Main Module', () => {
       };
       vi.mocked(collectUserInput).mockResolvedValueOnce({
         ...contextReact,
-        packageManager: null as any,
       });
       
       expect(vi.mocked(setupESLint)).toBeDefined();
@@ -136,7 +133,6 @@ describe('CLI Main Module', () => {
       };
       vi.mocked(collectUserInput).mockResolvedValueOnce({
         ...contextReact,
-        packageManager: null as any,
       });
       
       expect(vi.mocked(setupTailwind)).toBeDefined();
@@ -150,7 +146,6 @@ describe('CLI Main Module', () => {
       };
       vi.mocked(collectUserInput).mockResolvedValueOnce({
         ...contextReact,
-        packageManager: null as any,
       });
       
       expect(vi.mocked(setupTailwind)).toBeDefined();
@@ -165,7 +160,6 @@ describe('CLI Main Module', () => {
       };
       vi.mocked(collectUserInput).mockResolvedValueOnce({
         ...contextNext,
-        packageManager: null as any,
       });
       
       expect(vi.mocked(scaffoldNext)).toBeDefined();
@@ -178,7 +172,6 @@ describe('CLI Main Module', () => {
       };
       vi.mocked(collectUserInput).mockResolvedValueOnce({
         ...contextNext,
-        packageManager: null as any,
       });
       
       expect(vi.mocked(setupESLint)).toBeDefined();
@@ -191,7 +184,6 @@ describe('CLI Main Module', () => {
       };
       vi.mocked(collectUserInput).mockResolvedValueOnce({
         ...contextNext,
-        packageManager: null as any,
         typescript: false,
       });
       vi.mocked(pathExists).mockResolvedValueOnce(true);
@@ -217,7 +209,6 @@ describe('CLI Main Module', () => {
       };
       vi.mocked(collectUserInput).mockResolvedValueOnce({
         ...context,
-        packageManager: null as any,
       });
       
       expect(vi.mocked(setupVitest)).toBeDefined();
@@ -230,7 +221,6 @@ describe('CLI Main Module', () => {
       };
       vi.mocked(collectUserInput).mockResolvedValueOnce({
         ...context,
-        packageManager: null as any,
       });
       
       expect(vi.mocked(setupVitest)).toBeDefined();
@@ -243,7 +233,6 @@ describe('CLI Main Module', () => {
       };
       vi.mocked(collectUserInput).mockResolvedValueOnce({
         ...context,
-        packageManager: null as any,
       });
       
       expect(vi.mocked(setupDocker)).toBeDefined();
@@ -256,7 +245,6 @@ describe('CLI Main Module', () => {
       };
       vi.mocked(collectUserInput).mockResolvedValueOnce({
         ...context,
-        packageManager: null as any,
       });
       
       expect(vi.mocked(setupDocker)).toBeDefined();
@@ -269,7 +257,6 @@ describe('CLI Main Module', () => {
       };
       vi.mocked(collectUserInput).mockResolvedValueOnce({
         ...context,
-        packageManager: null as any,
       });
       
       expect(vi.mocked(setupGithubActions)).toBeDefined();
@@ -282,7 +269,6 @@ describe('CLI Main Module', () => {
       };
       vi.mocked(collectUserInput).mockResolvedValueOnce({
         ...context,
-        packageManager: null as any,
       });
       
       expect(vi.mocked(setupGithubActions)).toBeDefined();
@@ -307,7 +293,6 @@ describe('CLI Main Module', () => {
     it('should handle missing project name', async () => {
       vi.mocked(collectUserInput).mockResolvedValueOnce({
         ...mockContext,
-        packageManager: null as any,
       });
       
       expect(vi.mocked(collectUserInput)).toBeDefined();

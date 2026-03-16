@@ -28,7 +28,9 @@ describe('Install Utils', () => {
 
   describe('detectPackageManager', () => {
     it('should detect pnpm first if available', async () => {
-      vi.mocked(execa).mockImplementationOnce((async () => ({ stdout: '8.0.0' })) as any);
+      vi.mocked(execa).mockImplementationOnce(
+        (async () => ({ stdout: '8.0.0' })) as unknown as typeof execa
+      );
 
       const result = await detectPackageManager();
 
@@ -39,7 +41,9 @@ describe('Install Utils', () => {
     it('should detect yarn if pnpm is not available', async () => {
       vi.mocked(execa)
         .mockRejectedValueOnce(new Error('pnpm not found'))
-        .mockImplementationOnce((async () => ({ stdout: '1.22.0' })) as any);
+        .mockImplementationOnce(
+          (async () => ({ stdout: '1.22.0' })) as unknown as typeof execa
+        );
 
       const result = await detectPackageManager();
 
@@ -70,7 +74,7 @@ describe('Install Utils', () => {
 
   describe('installDependencies', () => {
     it('should install dependencies with npm', async () => {
-      vi.mocked(execa).mockResolvedValueOnce({ stdout: '' } as any);
+      vi.mocked(execa).mockResolvedValueOnce({ isCanceled: false, stdout: '' } as unknown as Awaited<ReturnType<typeof execa>>);
       const context: ProjectContext = {
         ...mockContext,
         packageManager: 'npm',
@@ -88,7 +92,7 @@ describe('Install Utils', () => {
     });
 
     it('should install dependencies with yarn', async () => {
-      vi.mocked(execa).mockResolvedValueOnce({ stdout: '' } as any);
+      vi.mocked(execa).mockResolvedValueOnce({ isCanceled: false, stdout: '' } as unknown as Awaited<ReturnType<typeof execa>>);
       const context: ProjectContext = {
         ...mockContext,
         packageManager: 'yarn',
@@ -103,7 +107,7 @@ describe('Install Utils', () => {
     });
 
     it('should install dependencies with pnpm', async () => {
-      vi.mocked(execa).mockResolvedValueOnce({ stdout: '' } as any);
+      vi.mocked(execa).mockResolvedValueOnce({ isCanceled: false, stdout: '' } as unknown as Awaited<ReturnType<typeof execa>>);
       const context: ProjectContext = {
         ...mockContext,
         packageManager: 'pnpm',
@@ -118,7 +122,7 @@ describe('Install Utils', () => {
     });
 
     it('should show success message on completion', async () => {
-      vi.mocked(execa).mockResolvedValueOnce({ stdout: '' } as any);
+      vi.mocked(execa).mockResolvedValueOnce({ isCanceled: false, stdout: '' } as unknown as Awaited<ReturnType<typeof execa>>);
 
       await installDependencies(mockContext);
 
@@ -138,7 +142,7 @@ describe('Install Utils', () => {
 
   describe('runCommand', () => {
     it('should run command with description', async () => {
-      vi.mocked(execa).mockResolvedValueOnce({ stdout: '' } as any);
+      vi.mocked(execa).mockResolvedValueOnce({ isCanceled: false, stdout: '' } as unknown as Awaited<ReturnType<typeof execa>>);
 
       await runCommand('git', ['init'], '/test/project', 'Initializing git');
 
@@ -151,7 +155,7 @@ describe('Install Utils', () => {
     });
 
     it('should run command without description', async () => {
-      vi.mocked(execa).mockResolvedValueOnce({ stdout: '' } as any);
+      vi.mocked(execa).mockResolvedValueOnce({ isCanceled: false, stdout: '' } as unknown as Awaited<ReturnType<typeof execa>>);
 
       await runCommand('npm', ['list'], '/test/project');
 
@@ -164,7 +168,7 @@ describe('Install Utils', () => {
 
     it('should handle command execution errors', async () => {
       const error = new Error('Command failed');
-      vi.mocked(execa).mockRejectedValueOnce(error);
+      vi.mocked(execa).mockRejectedValueOnce(error as unknown as Awaited<ReturnType<typeof execa>>);
 
       await expect(
         runCommand('git', ['init'], '/test/project', 'Initializing git')
@@ -173,23 +177,23 @@ describe('Install Utils', () => {
     });
 
     it('should pass correct cwd to execa', async () => {
-      vi.mocked(execa).mockResolvedValueOnce({ stdout: '' } as any);
+      vi.mocked(execa).mockResolvedValueOnce({ isCanceled: false, stdout: '' } as unknown as Awaited<ReturnType<typeof execa>>);
       const customPath = '/custom/path';
 
       await runCommand('npm', ['run', 'build'], customPath);
 
-      const callArgs = vi.mocked(execa).mock.calls[0] as any[];
-      expect(callArgs[2]?.cwd).toBe(customPath);
+      const callArgs = vi.mocked(execa).mock.calls[0] as unknown[];
+      expect(((callArgs[2] as unknown) as Record<string, unknown>).cwd).toBe(customPath);
     });
   });
 
   describe('initGit', () => {
     it('should initialize git repository', async () => {
       vi.mocked(execa)
-        .mockResolvedValueOnce({ stdout: '2.40.0' } as any) // git --version
-        .mockResolvedValueOnce({ stdout: '' } as any) // git init
-        .mockResolvedValueOnce({ stdout: '' } as any) // git add
-        .mockResolvedValueOnce({ stdout: '' } as any); // git commit
+        .mockResolvedValueOnce({ isCanceled: false, stdout: '2.40.0' } as unknown as Awaited<ReturnType<typeof execa>>) // git --version
+        .mockResolvedValueOnce({ isCanceled: false, stdout: '' } as unknown as Awaited<ReturnType<typeof execa>>) // git init
+        .mockResolvedValueOnce({ isCanceled: false, stdout: '' } as unknown as Awaited<ReturnType<typeof execa>>) // git add
+        .mockResolvedValueOnce({ isCanceled: false, stdout: '' } as unknown as Awaited<ReturnType<typeof execa>>); // git commit
 
       await initGit('/test/project');
 
@@ -203,10 +207,10 @@ describe('Install Utils', () => {
 
     it('should show success message when git is initialized', async () => {
       vi.mocked(execa)
-        .mockResolvedValueOnce({ stdout: '2.40.0' } as any)
-        .mockResolvedValueOnce({ stdout: '' } as any)
-        .mockResolvedValueOnce({ stdout: '' } as any)
-        .mockResolvedValueOnce({ stdout: '' } as any);
+        .mockResolvedValueOnce({ isCanceled: false, stdout: '2.40.0' } as unknown as Awaited<ReturnType<typeof execa>>)
+        .mockResolvedValueOnce({ isCanceled: false, stdout: '' } as unknown as Awaited<ReturnType<typeof execa>>)
+        .mockResolvedValueOnce({ isCanceled: false, stdout: '' } as unknown as Awaited<ReturnType<typeof execa>>)
+        .mockResolvedValueOnce({ isCanceled: false, stdout: '' } as unknown as Awaited<ReturnType<typeof execa>>);
 
       await initGit('/test/project');
 
@@ -225,7 +229,7 @@ describe('Install Utils', () => {
 
     it('should handle errors during git operations gracefully', async () => {
       vi.mocked(execa)
-        .mockResolvedValueOnce({ stdout: '2.40.0' } as any)
+        .mockResolvedValueOnce({ isCanceled: false, stdout: '2.40.0' } as unknown as Awaited<ReturnType<typeof execa>>)
         .mockRejectedValueOnce(new Error('fatal: already a git repository'));
 
       // initGit catches errors and doesn't re-throw, so it should complete without throwing

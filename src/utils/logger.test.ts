@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi, afterEach, type MockInstance } from 'vitest';
 import chalk from 'chalk';
 import ora from 'ora';
 import { logger } from './logger';
@@ -19,7 +19,7 @@ vi.mock('chalk', () => ({
 vi.mock('ora');
 
 describe('Logger Utils', () => {
-  let consoleSpy: any;
+  let consoleSpy: MockInstance<unknown[], void>;
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -119,7 +119,7 @@ describe('Logger Utils', () => {
         fail: vi.fn(),
         stop: vi.fn(),
       };
-      vi.mocked(ora).mockReturnValueOnce(mockSpinner as any);
+      vi.mocked(ora).mockReturnValueOnce(mockSpinner as unknown as ReturnType<typeof ora>);
 
       logger.startSpinner('Loading...');
 
@@ -130,13 +130,13 @@ describe('Logger Utils', () => {
 
   describe('succeedSpinner', () => {
     it('should succeed spinner with message', () => {
-      const mockSpinner: any = {
+      const mockSpinner: Record<string, unknown> = {
         start: vi.fn((_message?: string) => mockSpinner),
         succeed: vi.fn(),
         fail: vi.fn(),
         stop: vi.fn(),
       };
-      vi.mocked(ora).mockReturnValue(mockSpinner as any);
+      vi.mocked(ora).mockReturnValue(mockSpinner as unknown as ReturnType<typeof ora>);
 
       logger.startSpinner('Loading...');
       logger.succeedSpinner('Done!');
@@ -151,13 +151,13 @@ describe('Logger Utils', () => {
 
   describe('failSpinner', () => {
     it('should fail spinner with message', () => {
-      const mockSpinner: any = {
+      const mockSpinner: Record<string, unknown> = {
         start: vi.fn((_message?: string) => mockSpinner),
         succeed: vi.fn(),
         fail: vi.fn(),
         stop: vi.fn(),
       };
-      vi.mocked(ora).mockReturnValue(mockSpinner as any);
+      vi.mocked(ora).mockReturnValue(mockSpinner as unknown as ReturnType<typeof ora>);
 
       logger.startSpinner('Loading...');
       logger.failSpinner('Failed!');
@@ -172,13 +172,13 @@ describe('Logger Utils', () => {
 
   describe('stopSpinner', () => {
     it('should stop spinner', () => {
-      const mockSpinner: any = {
+      const mockSpinner: Record<string, unknown> = {
         start: vi.fn((_message?: string) => mockSpinner),
         succeed: vi.fn(),
         fail: vi.fn(),
         stop: vi.fn(),
       };
-      vi.mocked(ora).mockReturnValue(mockSpinner as any);
+      vi.mocked(ora).mockReturnValue(mockSpinner as unknown as ReturnType<typeof ora>);
 
       logger.startSpinner('Loading...');
       logger.stopSpinner();

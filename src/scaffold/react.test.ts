@@ -26,7 +26,7 @@ describe('React Project Scaffold', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(execa).mockResolvedValue({} as any);
+    vi.mocked(execa).mockResolvedValue({ isCanceled: false } as unknown as Awaited<ReturnType<typeof execa>>);
     vi.mocked(logger.step).mockImplementation(() => {});
     vi.mocked(logger.success).mockImplementation(() => {});
     vi.mocked(logger.error).mockImplementation(() => {});
