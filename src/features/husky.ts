@@ -1,6 +1,6 @@
 import type { ProjectContext } from '../context.js';
 import { logger } from '../utils/logger.js';
-import { writeFile, joinPath } from '../utils/file.js';
+import { writeFile, joinPath, ensureDir } from '../utils/file.js';
 import { addDevDependencies, addScripts } from '../utils/packageJson.js';
 
 export async function setupHusky(context: ProjectContext): Promise<void> {
@@ -50,6 +50,7 @@ async function configureLintStaged(context: ProjectContext): Promise<void> {
 async function createHuskyHooks(context: ProjectContext): Promise<void> {
   // Create .husky directory and hooks
   const huskyDir = joinPath(context.projectPath, '.husky');
+  await ensureDir(huskyDir);
 
   // pre-commit hook
   const preCommit = `#!/usr/bin/env sh

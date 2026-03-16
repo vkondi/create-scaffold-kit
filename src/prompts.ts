@@ -8,7 +8,7 @@ export async function collectUserInput(projectName?: string): Promise<ProjectCon
   logger.info('Welcome to create-vkondi-app! 🚀');
   logger.newLine();
 
-  const questions = [];
+  let questions: any[] = [];
 
   if (!projectName) {
     questions.push({
@@ -20,46 +20,75 @@ export async function collectUserInput(projectName?: string): Promise<ProjectCon
     });
   }
 
-  questions.push(
-    {
-      type: 'select' as const,
-      name: 'framework',
-      message: 'Select a framework:',
-      choices: [
-        { title: 'React (Vite)', value: 'react' },
-        { title: 'Next.js', value: 'next' },
-      ],
-      initial: 0,
+  questions.push({
+    type: 'select' as const,
+    name: 'framework',
+    message: 'Select a framework:',
+    choices: [
+      { title: 'React (Vite)', value: 'react' },
+      { title: 'Next.js', value: 'next' },
+    ],
+    initial: 0,
+  });
+
+  // Get project name and framework first
+  let answers = await prompts(questions, {
+    onCancel: () => {
+      logger.error('Operation cancelled');
+      process.exit(1);
     },
-    {
-      type: 'confirm' as const,
-      name: 'typescript',
-      message: 'Use TypeScript?',
-      initial: true,
-    },
-    {
+  });
+
+  const framework = answers.framework;
+  questions = [];
+
+  // Only ask about TypeScript and linting for React
+  // For Next.js, these will be asked by create-next-app itself
+  if (framework === 'react') {
+    questions.push(
+      {
+        type: 'confirm' as const,
+        name: 'typescript',
+        message: 'Use TypeScript?',
+        initial: true,
+      },
+      {
+        type: 'select' as const,
+        name: 'lintingMode',
+        message: 'Linting mode:',
+        choices: [
+          { title: 'Strict', value: 'strict' },
+          { title: 'Standard', value: 'standard' },
+        ],
+        initial: 0,
+      }
+    );
+  } else {
+    // For Next.js, set defaults that won't be asked
+    answers.typescript = true; // create-next-app will ask
+    answers.lintingMode = 'strict'; // default
+  }
+
+  // Always ask about these features
+  // For Next.js, skip Tailwind prompt as create-next-app handles it
+  if (framework === 'react') {
+    questions.push({
       type: 'confirm' as const,
       name: 'tailwind',
       message: 'Add Tailwind CSS?',
       initial: false,
-    },
-    {
+    });
+  } else {
+    answers.tailwind = false; // Will be handled by create-next-app
+  }
+
+  questions.push({
       type: 'select' as const,
       name: 'testing',
       message: 'Testing framework:',
       choices: [
         { title: 'Vitest', value: 'vitest' },
         { title: 'None', value: 'none' },
-      ],
-      initial: 0,
-    },
-    {
-      type: 'select' as const,
-      name: 'lintingMode',
-      message: 'Linting mode:',
-      choices: [
-        { title: 'Strict', value: 'strict' },
-        { title: 'Standard', value: 'standard' },
       ],
       initial: 0,
     },
@@ -77,12 +106,15 @@ export async function collectUserInput(projectName?: string): Promise<ProjectCon
     }
   );
 
-  const answers = await prompts(questions, {
+  // Get remaining answers
+  const moreAnswers = await prompts(questions, {
     onCancel: () => {
       logger.error('Operation cancelled');
       process.exit(1);
     },
   });
+
+  Object.assign(answers, moreAnswers);
 
   const finalProjectName = projectName || answers.projectName;
   const projectPath = path.resolve(process.cwd(), finalProjectName);

@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 import { Command } from 'commander';
 import chalk from 'chalk';
 import { collectUserInput } from './prompts.js';
@@ -15,6 +13,7 @@ import { setupTailwind } from './features/tailwind.js';
 import { setupDocker } from './features/docker.js';
 import { setupGithubActions } from './features/github-actions.js';
 import type { ProjectContext } from './context.js';
+import { pathExists, joinPath } from './utils/file.js';
 
 const program = new Command();
 
@@ -76,12 +75,18 @@ function displayConfiguration(context: ProjectContext): void {
   logger.info(
     `  ${chalk.cyan('Framework:')} ${context.framework === 'react' ? 'React (Vite)' : 'Next.js'}`
   );
-  logger.info(`  ${chalk.cyan('TypeScript:')} ${context.typescript ? 'Yes' : 'No'}`);
-  logger.info(`  ${chalk.cyan('Tailwind CSS:')} ${context.tailwind ? 'Yes' : 'No'}`);
+
+  if (context.framework === 'react') {
+    logger.info(`  ${chalk.cyan('TypeScript:')} ${context.typescript ? 'Yes' : 'No'}`);
+    logger.info(
+      `  ${chalk.cyan('Linting:')} ${context.lintingMode === 'strict' ? 'Strict' : 'Standard'}`
+    );
+    logger.info(`  ${chalk.cyan('Tailwind CSS:')} ${context.tailwind ? 'Yes' : 'No'}`);
+  } else {
+    logger.info(`  ${chalk.cyan('Note:')} TypeScript, Linter & Tailwind will be configured by create-next-app`);
+  }
+
   logger.info(`  ${chalk.cyan('Testing:')} ${context.testing === 'vitest' ? 'Vitest' : 'None'}`);
-  logger.info(
-    `  ${chalk.cyan('Linting:')} ${context.lintingMode === 'strict' ? 'Strict' : 'Standard'}`
-  );
   logger.info(`  ${chalk.cyan('GitHub Actions:')} ${context.githubActions ? 'Yes' : 'No'}`);
   logger.info(`  ${chalk.cyan('Docker:')} ${context.docker ? 'Yes' : 'No'}`);
 }
@@ -95,6 +100,9 @@ async function scaffoldProject(context: ProjectContext): Promise<void> {
     await scaffoldReact(context);
   } else {
     await scaffoldNext(context);
+    // Detect TypeScript choice from create-next-app for Next.js
+    const tsconfigPath = joinPath(context.projectPath, 'tsconfig.json');
+    context.typescript = await pathExists(tsconfigPath);
   }
 }
 
@@ -103,15 +111,19 @@ async function setupFeatures(context: ProjectContext): Promise<void> {
   logger.step(chalk.bold('Setting up features...'));
   logger.newLine();
 
-  // ESLint and Prettier are always installed
-  await setupESLint(context);
+  // ESLint setup - skip for Next.js as create-next-app already configures it
+  if (context.framework === 'react') {
+    await setupESLint(context);
+  }
+
+  // Prettier is always installed
   await setupPrettier(context);
 
   // Husky for git hooks
   await setupHusky(context);
 
-  // Optional features
-  if (context.tailwind) {
+  // Tailwind CSS - skip for Next.js as create-next-app handles it
+  if (context.tailwind && context.framework === 'react') {
     await setupTailwind(context);
   }
 

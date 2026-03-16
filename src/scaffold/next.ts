@@ -1,7 +1,7 @@
 import { execa } from 'execa';
 import type { ProjectContext } from '../context.js';
 import { logger } from '../utils/logger.js';
-import { writeFile, joinPath } from '../utils/file.js';
+import { writeFile, joinPath, pathExists } from '../utils/file.js';
 
 export async function scaffoldNext(context: ProjectContext): Promise<void> {
   logger.step('Creating Next.js project...');
@@ -16,32 +16,30 @@ export async function scaffoldNext(context: ProjectContext): Promise<void> {
       '--no-git',
     ];
 
-    if (context.typescript) {
-      args.push('--typescript');
-    } else {
-      args.push('--javascript');
-    }
-
-    args.push('--eslint');
-    args.push('--no-tailwind'); // We'll add it later if needed
-
-    // Use import alias
-    args.push('--import-alias', '@/*');
-
-    await execa('yarn', ['dlx', ...args], {
+    // Let create-next-app ask for TypeScript, linter, and other interactive prompts
+    // This avoids duplicate questions and uses Next.js's native setup flow
+    await execa('npx', args, {
       cwd: process.cwd(),
       stdio: 'inherit',
     });
 
     logger.success('Next.js project created');
 
+    // Detect if TypeScript was chosen by create-next-app
+    const detectTypeScript = async (): Promise<boolean> => {
+      const tsconfigPath = joinPath(context.projectPath, 'tsconfig.json');
+      return await pathExists(tsconfigPath);
+    };
+
+    const usesTypeScript = await detectTypeScript();
+
     // Configure strict TypeScript if needed
-    if (context.typescript) {
+    if (usesTypeScript) {
       await configureNextTypeScript(context);
     }
 
     // Update Next.js config
-    await updateNextConfig(context);
+    await updateNextConfig(context, usesTypeScript);
   } catch (error) {
     logger.error('Failed to create Next.js project');
     throw error;
@@ -90,13 +88,13 @@ async function configureNextTypeScript(context: ProjectContext): Promise<void> {
   logger.success('Strict TypeScript configuration applied');
 }
 
-async function updateNextConfig(context: ProjectContext): Promise<void> {
+async function updateNextConfig(context: ProjectContext, usesTypeScript: boolean): Promise<void> {
   const nextConfigPath = joinPath(
     context.projectPath,
-    context.typescript ? 'next.config.ts' : 'next.config.mjs'
+    usesTypeScript ? 'next.config.ts' : 'next.config.mjs'
   );
 
-  const nextConfig = context.typescript
+  const nextConfig = usesTypeScript
     ? `import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {

@@ -45,7 +45,10 @@ export default {
 };
 `;
 
-  const configPath = joinPath(context.projectPath, 'tailwind.config.js');
+  const configPath = joinPath(
+    context.projectPath,
+    context.typescript ? 'tailwind.config.ts' : 'tailwind.config.js'
+  );
   await writeFile(configPath, config);
 }
 
@@ -58,7 +61,10 @@ async function createPostCSSConfig(context: ProjectContext): Promise<void> {
 };
 `;
 
-  const configPath = joinPath(context.projectPath, 'postcss.config.js');
+  const configPath = joinPath(
+    context.projectPath,
+    context.typescript ? 'postcss.config.ts' : 'postcss.config.js'
+  );
   await writeFile(configPath, config);
 }
 

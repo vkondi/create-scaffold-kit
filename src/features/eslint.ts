@@ -53,7 +53,10 @@ function getESLintDependencies(context: ProjectContext): Record<string, string> 
 async function createESLintConfig(context: ProjectContext): Promise<void> {
   const isStrict = context.lintingMode === 'strict';
 
-  const configPath = joinPath(context.projectPath, 'eslint.config.js');
+  const configPath = joinPath(
+    context.projectPath,
+    context.typescript ? 'eslint.config.ts' : 'eslint.config.js'
+  );
   const configContent = `import js from '@eslint/js';
 ${context.typescript ? "import tsPlugin from '@typescript-eslint/eslint-plugin';\nimport tsParser from '@typescript-eslint/parser';" : ''}
 ${context.framework === 'react' ? "import react from 'eslint-plugin-react';\nimport reactHooks from 'eslint-plugin-react-hooks';\nimport jsxA11y from 'eslint-plugin-jsx-a11y';" : ''}

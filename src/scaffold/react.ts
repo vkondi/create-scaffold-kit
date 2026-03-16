@@ -11,7 +11,7 @@ export async function scaffoldReact(context: ProjectContext): Promise<void> {
     const template = context.typescript ? 'react-ts' : 'react';
     await execa(
       'yarn',
-      ['create', 'vite@latest', context.projectName, '--', '--template', template],
+      ['create', 'vite', context.projectName, '--', '--template', template],
       {
         cwd: process.cwd(),
         stdio: 'pipe',
