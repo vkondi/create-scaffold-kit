@@ -5,9 +5,12 @@ import { detectPackageManager, installDependencies, initGit } from './utils/inst
 import { scaffoldReact } from './scaffold/react.js';
 import { scaffoldNext } from './scaffold/next.js';
 import { setupESLint } from './features/eslint.js';
+import { setupOxlint } from './features/oxlint.js';
 import { setupPrettier } from './features/prettier.js';
+import { setupOxfmt } from './features/oxfmt.js';
 import { setupHusky } from './features/husky.js';
 import { setupVitest } from './features/vitest.js';
+import { setupJest } from './features/jest.js';
 import { setupTailwind } from './features/tailwind.js';
 import { setupDocker } from './features/docker.js';
 import { setupGithubActions } from './features/github-actions.js';
@@ -21,9 +24,12 @@ vi.mock('./utils/install.js');
 vi.mock('./scaffold/react.js');
 vi.mock('./scaffold/next.js');
 vi.mock('./features/eslint.js');
+vi.mock('./features/oxlint.js');
 vi.mock('./features/prettier.js');
+vi.mock('./features/oxfmt.js');
 vi.mock('./features/husky.js');
 vi.mock('./features/vitest.js');
+vi.mock('./features/jest.js');
 vi.mock('./features/tailwind.js');
 vi.mock('./features/docker.js');
 vi.mock('./features/github-actions.js');
@@ -35,7 +41,8 @@ describe('CLI Main Module', () => {
     projectPath: '/test/project',
     framework: 'react',
     typescript: true,
-    lintingMode: 'standard',
+    linter: 'eslint',
+    formatter: 'prettier',
     tailwind: true,
     testing: 'vitest',
     githubActions: true,
@@ -61,9 +68,12 @@ describe('CLI Main Module', () => {
     vi.mocked(scaffoldReact).mockResolvedValueOnce(undefined);
     vi.mocked(scaffoldNext).mockResolvedValueOnce(undefined);
     vi.mocked(setupESLint).mockResolvedValueOnce(undefined);
+    vi.mocked(setupOxlint).mockResolvedValueOnce(undefined);
     vi.mocked(setupPrettier).mockResolvedValueOnce(undefined);
+    vi.mocked(setupOxfmt).mockResolvedValueOnce(undefined);
     vi.mocked(setupHusky).mockResolvedValueOnce(undefined);
     vi.mocked(setupVitest).mockResolvedValueOnce(undefined);
+    vi.mocked(setupJest).mockResolvedValueOnce(undefined);
     vi.mocked(setupTailwind).mockResolvedValueOnce(undefined);
     vi.mocked(setupDocker).mockResolvedValueOnce(undefined);
     vi.mocked(setupGithubActions).mockResolvedValueOnce(undefined);
@@ -190,15 +200,27 @@ describe('CLI Main Module', () => {
   });
 
   describe('Feature Setup', () => {
-    it('should always setup Prettier', async () => {
+    it('should setup Prettier when formatter is prettier', async () => {
       expect(vi.mocked(setupPrettier)).toBeDefined();
+    });
+
+    it('should setup Oxfmt when formatter is oxfmt', async () => {
+      expect(vi.mocked(setupOxfmt)).toBeDefined();
     });
 
     it('should always setup Husky', async () => {
       expect(vi.mocked(setupHusky)).toBeDefined();
     });
 
-    it('should setup Vitest when testing is enabled', async () => {
+    it('should setup ESLint when linter is eslint', async () => {
+      expect(vi.mocked(setupESLint)).toBeDefined();
+    });
+
+    it('should setup Oxlint when linter is oxlint', async () => {
+      expect(vi.mocked(setupOxlint)).toBeDefined();
+    });
+
+    it('should setup Vitest when testing is vitest', async () => {
       const context: ProjectContext = {
         ...mockContext,
         testing: 'vitest',
@@ -210,7 +232,19 @@ describe('CLI Main Module', () => {
       expect(vi.mocked(setupVitest)).toBeDefined();
     });
 
-    it('should skip Vitest when testing is disabled', async () => {
+    it('should setup Jest when testing is jest', async () => {
+      const context: ProjectContext = {
+        ...mockContext,
+        testing: 'jest',
+      };
+      vi.mocked(collectUserInput).mockResolvedValueOnce({
+        ...context,
+      });
+
+      expect(vi.mocked(setupJest)).toBeDefined();
+    });
+
+    it('should skip testing setup when testing is none', async () => {
       const context: ProjectContext = {
         ...mockContext,
         testing: 'none',
@@ -220,6 +254,7 @@ describe('CLI Main Module', () => {
       });
 
       expect(vi.mocked(setupVitest)).toBeDefined();
+      expect(vi.mocked(setupJest)).toBeDefined();
     });
 
     it('should setup Docker when enabled', async () => {

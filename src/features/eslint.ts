@@ -51,8 +51,6 @@ function getESLintDependencies(context: ProjectContext): Record<string, string> 
 }
 
 async function createESLintConfig(context: ProjectContext): Promise<void> {
-  const isStrict = context.lintingMode === 'strict';
-
   const configPath = joinPath(
     context.projectPath,
     context.typescript ? 'eslint.config.ts' : 'eslint.config.js'
@@ -84,13 +82,11 @@ export default [
         : ''
     }
     rules: {
-      ${isStrict ? "'no-console': ['warn', { allow: ['warn', 'error'] }]," : "'no-console': 'off',"}
+      'no-console': 'off',
       'no-unused-vars': 'off',
       ${context.typescript ? "'@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }]," : ''}
       ${context.typescript ? "'@typescript-eslint/explicit-function-return-type': 'off'," : ''}
       ${context.typescript ? "'@typescript-eslint/no-explicit-any': 'warn'," : ''}
-      ${isStrict && context.typescript ? "'@typescript-eslint/strict-boolean-expressions': 'off'," : ''}
-      ${isStrict ? "'import/no-default-export': 'error'," : ''}
       'import/order': [
         'error',
         {

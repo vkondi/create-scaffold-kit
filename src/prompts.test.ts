@@ -38,9 +38,10 @@ describe('Prompts Module', () => {
         })
         .mockResolvedValueOnce({
           typescript: true,
-          lintingMode: 'strict',
+          linter: 'eslint',
           tailwind: true,
           testing: 'vitest',
+          formatter: 'prettier',
           githubActions: true,
           docker: false,
         });
@@ -61,6 +62,7 @@ describe('Prompts Module', () => {
         })
         .mockResolvedValueOnce({
           testing: 'vitest',
+          formatter: 'prettier',
           githubActions: true,
           docker: false,
         });
@@ -80,9 +82,10 @@ describe('Prompts Module', () => {
         })
         .mockResolvedValueOnce({
           typescript: false,
-          lintingMode: 'standard',
+          linter: 'none',
           tailwind: false,
           testing: 'none',
+          formatter: 'none',
           githubActions: false,
           docker: false,
         });
@@ -102,6 +105,7 @@ describe('Prompts Module', () => {
         })
         .mockResolvedValueOnce({
           testing: 'vitest',
+          formatter: 'prettier',
           githubActions: true,
           docker: false,
         });
@@ -122,9 +126,10 @@ describe('Prompts Module', () => {
         })
         .mockResolvedValueOnce({
           typescript: true,
-          lintingMode: 'strict',
+          linter: 'eslint',
           tailwind: true,
           testing: 'vitest',
+          formatter: 'prettier',
           githubActions: true,
           docker: false,
         });
@@ -144,6 +149,7 @@ describe('Prompts Module', () => {
         })
         .mockResolvedValueOnce({
           testing: 'vitest',
+          formatter: 'prettier',
           githubActions: false,
           docker: false,
         });
@@ -155,7 +161,7 @@ describe('Prompts Module', () => {
       expect(result.tailwind).toBe(false);
     });
 
-    it('should ask about testing framework', async () => {
+    it('should ask about testing framework and support Vitest', async () => {
       vi.mocked(prompts)
         .mockResolvedValueOnce({
           projectName: 'test-app',
@@ -163,9 +169,10 @@ describe('Prompts Module', () => {
         })
         .mockResolvedValueOnce({
           typescript: true,
-          lintingMode: 'strict',
+          linter: 'eslint',
           tailwind: false,
           testing: 'vitest',
+          formatter: 'prettier',
           githubActions: true,
           docker: false,
         });
@@ -177,6 +184,190 @@ describe('Prompts Module', () => {
       expect(result.testing).toBe('vitest');
     });
 
+    it('should support Jest as testing framework', async () => {
+      vi.mocked(prompts)
+        .mockResolvedValueOnce({
+          projectName: 'test-app',
+          framework: 'react',
+        })
+        .mockResolvedValueOnce({
+          typescript: true,
+          linter: 'eslint',
+          tailwind: false,
+          testing: 'jest',
+          formatter: 'prettier',
+          githubActions: true,
+          docker: false,
+        });
+
+      vi.mocked(fileModule.pathExists).mockResolvedValueOnce(false);
+
+      const result = await collectUserInput();
+
+      expect(result.testing).toBe('jest');
+    });
+
+    it('should support None as testing framework', async () => {
+      vi.mocked(prompts)
+        .mockResolvedValueOnce({
+          projectName: 'test-app',
+          framework: 'react',
+        })
+        .mockResolvedValueOnce({
+          typescript: true,
+          linter: 'none',
+          tailwind: false,
+          testing: 'none',
+          formatter: 'none',
+          githubActions: false,
+          docker: false,
+        });
+
+      vi.mocked(fileModule.pathExists).mockResolvedValueOnce(false);
+
+      const result = await collectUserInput();
+
+      expect(result.testing).toBe('none');
+    });
+
+    it('should ask about linter and support ESLint', async () => {
+      vi.mocked(prompts)
+        .mockResolvedValueOnce({
+          projectName: 'app',
+          framework: 'react',
+        })
+        .mockResolvedValueOnce({
+          typescript: true,
+          linter: 'eslint',
+          tailwind: true,
+          testing: 'vitest',
+          formatter: 'prettier',
+          githubActions: true,
+          docker: false,
+        });
+
+      vi.mocked(fileModule.pathExists).mockResolvedValueOnce(false);
+
+      const result = await collectUserInput();
+
+      expect(result.linter).toBe('eslint');
+    });
+
+    it('should support Oxlint as linter', async () => {
+      vi.mocked(prompts)
+        .mockResolvedValueOnce({
+          projectName: 'app',
+          framework: 'react',
+        })
+        .mockResolvedValueOnce({
+          typescript: true,
+          linter: 'oxlint',
+          tailwind: false,
+          testing: 'vitest',
+          formatter: 'prettier',
+          githubActions: false,
+          docker: false,
+        });
+
+      vi.mocked(fileModule.pathExists).mockResolvedValueOnce(false);
+
+      const result = await collectUserInput();
+
+      expect(result.linter).toBe('oxlint');
+    });
+
+    it('should support None as linter', async () => {
+      vi.mocked(prompts)
+        .mockResolvedValueOnce({
+          projectName: 'app',
+          framework: 'react',
+        })
+        .mockResolvedValueOnce({
+          typescript: true,
+          linter: 'none',
+          tailwind: false,
+          testing: 'none',
+          formatter: 'none',
+          githubActions: false,
+          docker: false,
+        });
+
+      vi.mocked(fileModule.pathExists).mockResolvedValueOnce(false);
+
+      const result = await collectUserInput();
+
+      expect(result.linter).toBe('none');
+    });
+
+    it('should ask about formatter and support Prettier', async () => {
+      vi.mocked(prompts)
+        .mockResolvedValueOnce({
+          projectName: 'app',
+          framework: 'react',
+        })
+        .mockResolvedValueOnce({
+          typescript: true,
+          linter: 'eslint',
+          tailwind: true,
+          testing: 'vitest',
+          formatter: 'prettier',
+          githubActions: true,
+          docker: false,
+        });
+
+      vi.mocked(fileModule.pathExists).mockResolvedValueOnce(false);
+
+      const result = await collectUserInput();
+
+      expect(result.formatter).toBe('prettier');
+    });
+
+    it('should support Oxfmt as formatter', async () => {
+      vi.mocked(prompts)
+        .mockResolvedValueOnce({
+          projectName: 'app',
+          framework: 'react',
+        })
+        .mockResolvedValueOnce({
+          typescript: true,
+          linter: 'oxlint',
+          tailwind: false,
+          testing: 'vitest',
+          formatter: 'oxfmt',
+          githubActions: false,
+          docker: false,
+        });
+
+      vi.mocked(fileModule.pathExists).mockResolvedValueOnce(false);
+
+      const result = await collectUserInput();
+
+      expect(result.formatter).toBe('oxfmt');
+    });
+
+    it('should support None as formatter', async () => {
+      vi.mocked(prompts)
+        .mockResolvedValueOnce({
+          projectName: 'app',
+          framework: 'react',
+        })
+        .mockResolvedValueOnce({
+          typescript: true,
+          linter: 'none',
+          tailwind: false,
+          testing: 'none',
+          formatter: 'none',
+          githubActions: false,
+          docker: false,
+        });
+
+      vi.mocked(fileModule.pathExists).mockResolvedValueOnce(false);
+
+      const result = await collectUserInput();
+
+      expect(result.formatter).toBe('none');
+    });
+
     it('should ask about GitHub Actions with default Yes', async () => {
       vi.mocked(prompts)
         .mockResolvedValueOnce({
@@ -185,9 +376,10 @@ describe('Prompts Module', () => {
         })
         .mockResolvedValueOnce({
           typescript: true,
-          lintingMode: 'strict',
+          linter: 'eslint',
           tailwind: true,
           testing: 'vitest',
+          formatter: 'prettier',
           githubActions: true,
           docker: false,
         });
@@ -207,9 +399,10 @@ describe('Prompts Module', () => {
         })
         .mockResolvedValueOnce({
           typescript: true,
-          lintingMode: 'strict',
+          linter: 'eslint',
           tailwind: false,
           testing: 'vitest',
+          formatter: 'prettier',
           githubActions: true,
           docker: true,
         });
@@ -229,9 +422,10 @@ describe('Prompts Module', () => {
         })
         .mockResolvedValueOnce({
           typescript: true,
-          lintingMode: 'strict',
+          linter: 'eslint',
           tailwind: false,
           testing: 'vitest',
+          formatter: 'prettier',
           githubActions: true,
           docker: false,
         })
@@ -256,9 +450,10 @@ describe('Prompts Module', () => {
         })
         .mockResolvedValueOnce({
           typescript: true,
-          lintingMode: 'strict',
+          linter: 'eslint',
           tailwind: false,
           testing: 'vitest',
+          formatter: 'prettier',
           githubActions: true,
           docker: false,
         })
@@ -296,9 +491,10 @@ describe('Prompts Module', () => {
         })
         .mockResolvedValueOnce({
           typescript: true,
-          lintingMode: 'strict',
+          linter: 'eslint',
           tailwind: true,
           testing: 'vitest',
+          formatter: 'prettier',
           githubActions: true,
           docker: true,
         });
@@ -313,7 +509,8 @@ describe('Prompts Module', () => {
       expect(result).toHaveProperty('typescript');
       expect(result).toHaveProperty('tailwind');
       expect(result).toHaveProperty('testing');
-      expect(result).toHaveProperty('lintingMode');
+      expect(result).toHaveProperty('linter');
+      expect(result).toHaveProperty('formatter');
       expect(result).toHaveProperty('githubActions');
       expect(result).toHaveProperty('docker');
     });
@@ -326,9 +523,10 @@ describe('Prompts Module', () => {
         })
         .mockResolvedValueOnce({
           typescript: true,
-          lintingMode: 'strict',
+          linter: 'eslint',
           tailwind: false,
           testing: 'vitest',
+          formatter: 'prettier',
           githubActions: true,
           docker: false,
         });
@@ -340,48 +538,24 @@ describe('Prompts Module', () => {
       expect(result.projectPath).toContain('my-app');
     });
 
-    it('should support all linting modes', async () => {
-      // Test strict
+    it('should set default linter to eslint for Next.js', async () => {
       vi.mocked(prompts)
         .mockResolvedValueOnce({
-          projectName: 'app1',
-          framework: 'react',
+          projectName: 'next-app',
+          framework: 'next',
         })
         .mockResolvedValueOnce({
-          typescript: true,
-          lintingMode: 'strict',
-          tailwind: false,
-          testing: 'vitest',
-          githubActions: true,
+          testing: 'none',
+          formatter: 'none',
+          githubActions: false,
           docker: false,
         });
 
       vi.mocked(fileModule.pathExists).mockResolvedValueOnce(false);
 
-      let result = await collectUserInput();
-      expect(result.lintingMode).toBe('strict');
+      const result = await collectUserInput();
 
-      vi.clearAllMocks();
-
-      // Test standard
-      vi.mocked(prompts)
-        .mockResolvedValueOnce({
-          projectName: 'app2',
-          framework: 'react',
-        })
-        .mockResolvedValueOnce({
-          typescript: true,
-          lintingMode: 'standard',
-          tailwind: false,
-          testing: 'vitest',
-          githubActions: true,
-          docker: false,
-        });
-
-      vi.mocked(fileModule.pathExists).mockResolvedValueOnce(false);
-
-      result = await collectUserInput();
-      expect(result.lintingMode).toBe('standard');
+      expect(result.linter).toBe('eslint');
     });
   });
 });

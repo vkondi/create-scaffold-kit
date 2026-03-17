@@ -16,7 +16,8 @@ describe('ESLint Feature Setup', () => {
     projectPath: '/test/project',
     framework: 'react',
     typescript: true,
-    lintingMode: 'standard',
+    linter: 'eslint',
+    formatter: 'prettier',
     tailwind: true,
     testing: 'vitest',
     githubActions: true,
@@ -193,30 +194,16 @@ describe('ESLint Feature Setup', () => {
   });
 
   describe('ESLint Rules', () => {
-    it('should disable console logs in standard mode', async () => {
-      const standardContext = { ...mockContext, lintingMode: 'standard' as const };
+    it('should set no-console to off by default', async () => {
       vi.mocked(writeFile).mockResolvedValueOnce(undefined);
       vi.mocked(writeFile).mockResolvedValueOnce(undefined);
 
-      await setupESLint(standardContext);
+      await setupESLint(mockContext);
 
       const configCall = vi.mocked(writeFile).mock.calls[0];
       const config = configCall[1] as string;
 
       expect(config).toContain("'no-console': 'off'");
-    });
-
-    it('should warn about console logs in strict mode', async () => {
-      const strictContext = { ...mockContext, lintingMode: 'strict' as const };
-      vi.mocked(writeFile).mockResolvedValueOnce(undefined);
-      vi.mocked(writeFile).mockResolvedValueOnce(undefined);
-
-      await setupESLint(strictContext);
-
-      const configCall = vi.mocked(writeFile).mock.calls[0];
-      const config = configCall[1] as string;
-
-      expect(config).toContain("'no-console': ['warn'");
     });
 
     it('should configure React rules for React projects', async () => {

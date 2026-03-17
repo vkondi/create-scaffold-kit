@@ -4,8 +4,9 @@ export interface ProjectContext {
   framework: 'react' | 'next';
   typescript: boolean;
   tailwind: boolean;
-  testing: 'vitest' | 'none';
-  lintingMode: 'strict' | 'standard';
+  testing: 'vitest' | 'jest' | 'none';
+  linter: 'eslint' | 'oxlint' | 'none';
+  formatter: 'prettier' | 'oxfmt' | 'none';
   githubActions: boolean;
   docker: boolean;
   packageManager: 'npm' | 'yarn' | 'pnpm';

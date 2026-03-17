@@ -10,7 +10,8 @@ describe('ProjectContext Type', () => {
       typescript: true,
       tailwind: true,
       testing: 'vitest',
-      lintingMode: 'strict',
+      linter: 'eslint',
+      formatter: 'prettier',
       githubActions: true,
       docker: true,
       packageManager: 'npm',
@@ -21,6 +22,8 @@ describe('ProjectContext Type', () => {
     expect(mockContext.typescript).toBe(true);
     expect(mockContext.tailwind).toBe(true);
     expect(mockContext.testing).toBe('vitest');
+    expect(mockContext.linter).toBe('eslint');
+    expect(mockContext.formatter).toBe('prettier');
     expect(mockContext.githubActions).toBe(true);
     expect(mockContext.docker).toBe(true);
   });
@@ -33,7 +36,8 @@ describe('ProjectContext Type', () => {
       typescript: true,
       tailwind: false,
       testing: 'none',
-      lintingMode: 'standard',
+      linter: 'eslint',
+      formatter: 'none',
       githubActions: false,
       docker: false,
       packageManager: 'yarn',
@@ -51,7 +55,8 @@ describe('ProjectContext Type', () => {
       typescript: true,
       tailwind: false,
       testing: 'vitest',
-      lintingMode: 'strict',
+      linter: 'eslint',
+      formatter: 'prettier',
       githubActions: true,
       docker: false,
       packageManager: 'pnpm',
@@ -68,57 +73,139 @@ describe('ProjectContext Type', () => {
       typescript: true,
       tailwind: false,
       testing: 'vitest',
-      lintingMode: 'strict',
+      linter: 'eslint',
+      formatter: 'prettier',
+      githubActions: false,
+      docker: false,
+      packageManager: 'npm',
+    };
+
+    const jestContext: ProjectContext = {
+      projectName: 'app2',
+      projectPath: '/app2',
+      framework: 'react',
+      typescript: true,
+      tailwind: false,
+      testing: 'jest',
+      linter: 'eslint',
+      formatter: 'prettier',
       githubActions: false,
       docker: false,
       packageManager: 'npm',
     };
 
     const noneContext: ProjectContext = {
-      projectName: 'app2',
-      projectPath: '/app2',
+      projectName: 'app3',
+      projectPath: '/app3',
       framework: 'react',
       typescript: true,
       tailwind: false,
       testing: 'none',
-      lintingMode: 'strict',
+      linter: 'none',
+      formatter: 'none',
       githubActions: false,
       docker: false,
       packageManager: 'npm',
     };
 
     expect(vitestContext.testing).toBe('vitest');
+    expect(jestContext.testing).toBe('jest');
     expect(noneContext.testing).toBe('none');
   });
 
-  it('should support all linting modes', () => {
-    const strictContext: ProjectContext = {
+  it('should support all linter options', () => {
+    const eslintContext: ProjectContext = {
       projectName: 'app1',
       projectPath: '/app1',
       framework: 'react',
       typescript: true,
       tailwind: false,
       testing: 'vitest',
-      lintingMode: 'strict',
+      linter: 'eslint',
+      formatter: 'prettier',
       githubActions: false,
       docker: false,
       packageManager: 'npm',
     };
 
-    const standardContext: ProjectContext = {
+    const oxlintContext: ProjectContext = {
       projectName: 'app2',
       projectPath: '/app2',
       framework: 'react',
       typescript: true,
       tailwind: false,
       testing: 'vitest',
-      lintingMode: 'standard',
+      linter: 'oxlint',
+      formatter: 'prettier',
       githubActions: false,
       docker: false,
       packageManager: 'npm',
     };
 
-    expect(strictContext.lintingMode).toBe('strict');
-    expect(standardContext.lintingMode).toBe('standard');
+    const noneLinterContext: ProjectContext = {
+      projectName: 'app3',
+      projectPath: '/app3',
+      framework: 'react',
+      typescript: true,
+      tailwind: false,
+      testing: 'none',
+      linter: 'none',
+      formatter: 'none',
+      githubActions: false,
+      docker: false,
+      packageManager: 'npm',
+    };
+
+    expect(eslintContext.linter).toBe('eslint');
+    expect(oxlintContext.linter).toBe('oxlint');
+    expect(noneLinterContext.linter).toBe('none');
+  });
+
+  it('should support all formatter options', () => {
+    const prettierContext: ProjectContext = {
+      projectName: 'app1',
+      projectPath: '/app1',
+      framework: 'react',
+      typescript: true,
+      tailwind: false,
+      testing: 'vitest',
+      linter: 'eslint',
+      formatter: 'prettier',
+      githubActions: false,
+      docker: false,
+      packageManager: 'npm',
+    };
+
+    const oxfmtContext: ProjectContext = {
+      projectName: 'app2',
+      projectPath: '/app2',
+      framework: 'react',
+      typescript: true,
+      tailwind: false,
+      testing: 'vitest',
+      linter: 'eslint',
+      formatter: 'oxfmt',
+      githubActions: false,
+      docker: false,
+      packageManager: 'npm',
+    };
+
+    const noneFormatterContext: ProjectContext = {
+      projectName: 'app3',
+      projectPath: '/app3',
+      framework: 'react',
+      typescript: true,
+      tailwind: false,
+      testing: 'none',
+      linter: 'none',
+      formatter: 'none',
+      githubActions: false,
+      docker: false,
+      packageManager: 'npm',
+    };
+
+    expect(prettierContext.formatter).toBe('prettier');
+    expect(oxfmtContext.formatter).toBe('oxfmt');
+    expect(noneFormatterContext.formatter).toBe('none');
   });
 });

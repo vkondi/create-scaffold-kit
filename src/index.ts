@@ -6,9 +6,12 @@ import { detectPackageManager, installDependencies, initGit } from './utils/inst
 import { scaffoldReact } from './scaffold/react.js';
 import { scaffoldNext } from './scaffold/next.js';
 import { setupESLint } from './features/eslint.js';
+import { setupOxlint } from './features/oxlint.js';
 import { setupPrettier } from './features/prettier.js';
+import { setupOxfmt } from './features/oxfmt.js';
 import { setupHusky } from './features/husky.js';
 import { setupVitest } from './features/vitest.js';
+import { setupJest } from './features/jest.js';
 import { setupTailwind } from './features/tailwind.js';
 import { setupDocker } from './features/docker.js';
 import { setupGithubActions } from './features/github-actions.js';
@@ -78,9 +81,9 @@ function displayConfiguration(context: ProjectContext): void {
 
   if (context.framework === 'react') {
     logger.info(`  ${chalk.cyan('TypeScript:')} ${context.typescript ? 'Yes' : 'No'}`);
-    logger.info(
-      `  ${chalk.cyan('Linting:')} ${context.lintingMode === 'strict' ? 'Strict' : 'Standard'}`
-    );
+    const linterLabel =
+      context.linter === 'eslint' ? 'ESLint' : context.linter === 'oxlint' ? 'Oxlint' : 'None';
+    logger.info(`  ${chalk.cyan('Linter:')} ${linterLabel}`);
     logger.info(`  ${chalk.cyan('Tailwind CSS:')} ${context.tailwind ? 'Yes' : 'No'}`);
   } else {
     logger.info(
@@ -88,7 +91,16 @@ function displayConfiguration(context: ProjectContext): void {
     );
   }
 
-  logger.info(`  ${chalk.cyan('Testing:')} ${context.testing === 'vitest' ? 'Vitest' : 'None'}`);
+  const testingLabel =
+    context.testing === 'vitest' ? 'Vitest' : context.testing === 'jest' ? 'Jest' : 'None';
+  logger.info(`  ${chalk.cyan('Testing:')} ${testingLabel}`);
+  const formatterLabel =
+    context.formatter === 'prettier'
+      ? 'Prettier'
+      : context.formatter === 'oxfmt'
+        ? 'Oxfmt'
+        : 'None';
+  logger.info(`  ${chalk.cyan('Formatter:')} ${formatterLabel}`);
   logger.info(`  ${chalk.cyan('GitHub Actions:')} ${context.githubActions ? 'Yes' : 'No'}`);
   logger.info(`  ${chalk.cyan('Docker:')} ${context.docker ? 'Yes' : 'No'}`);
 }
@@ -113,13 +125,21 @@ async function setupFeatures(context: ProjectContext): Promise<void> {
   logger.step(chalk.bold('Setting up features...'));
   logger.newLine();
 
-  // ESLint setup - skip for Next.js as create-next-app already configures it
+  // Linter setup - skip for Next.js as create-next-app already configures it
   if (context.framework === 'react') {
-    await setupESLint(context);
+    if (context.linter === 'eslint') {
+      await setupESLint(context);
+    } else if (context.linter === 'oxlint') {
+      await setupOxlint(context);
+    }
   }
 
-  // Prettier is always installed
-  await setupPrettier(context);
+  // Formatter setup
+  if (context.formatter === 'prettier') {
+    await setupPrettier(context);
+  } else if (context.formatter === 'oxfmt') {
+    await setupOxfmt(context);
+  }
 
   // Husky for git hooks
   await setupHusky(context);
@@ -131,6 +151,8 @@ async function setupFeatures(context: ProjectContext): Promise<void> {
 
   if (context.testing === 'vitest') {
     await setupVitest(context);
+  } else if (context.testing === 'jest') {
+    await setupJest(context);
   }
 
   if (context.docker) {

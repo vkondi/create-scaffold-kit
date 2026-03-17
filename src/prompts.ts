@@ -58,11 +58,12 @@ export async function collectUserInput(projectName?: string): Promise<ProjectCon
       },
       {
         type: 'select' as const,
-        name: 'lintingMode',
-        message: 'Linting mode:',
+        name: 'linter',
+        message: 'Select a linter:',
         choices: [
-          { title: 'Strict', value: 'strict' },
-          { title: 'Standard', value: 'standard' },
+          { title: 'ESLint', value: 'eslint' },
+          { title: 'Oxlint', value: 'oxlint' },
+          { title: 'None', value: 'none' },
         ],
         initial: 0,
       }
@@ -70,7 +71,7 @@ export async function collectUserInput(projectName?: string): Promise<ProjectCon
   } else {
     // For Next.js, set defaults that won't be asked
     answers.typescript = true; // create-next-app will ask
-    answers.lintingMode = 'strict'; // default
+    answers.linter = 'eslint'; // default
   }
 
   // Always ask about these features
@@ -97,6 +98,18 @@ export async function collectUserInput(projectName?: string): Promise<ProjectCon
       message: 'Testing framework:',
       choices: [
         { title: 'Vitest', value: 'vitest' },
+        { title: 'Jest', value: 'jest' },
+        { title: 'None', value: 'none' },
+      ],
+      initial: 0,
+    },
+    {
+      type: 'select' as const,
+      name: 'formatter',
+      message: 'Select a formatter:',
+      choices: [
+        { title: 'Prettier', value: 'prettier' },
+        { title: 'Oxfmt', value: 'oxfmt' },
         { title: 'None', value: 'none' },
       ],
       initial: 0,
@@ -157,7 +170,8 @@ export async function collectUserInput(projectName?: string): Promise<ProjectCon
     typescript: answers.typescript,
     tailwind: answers.tailwind,
     testing: answers.testing,
-    lintingMode: answers.lintingMode,
+    linter: answers.linter,
+    formatter: answers.formatter,
     githubActions: answers.githubActions,
     docker: answers.docker,
     packageManager: 'yarn', // Will be detected later
