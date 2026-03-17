@@ -106,7 +106,7 @@ describe('ESLint Feature Setup', () => {
       const tsContext = { ...mockContext, typescript: true };
       vi.mocked(writeFile).mockResolvedValueOnce(undefined);
       vi.mocked(writeFile).mockResolvedValueOnce(undefined);
-      
+
       await setupESLint(tsContext);
 
       const callArgs = vi.mocked(addDevDependencies).mock.calls[0];
@@ -118,7 +118,7 @@ describe('ESLint Feature Setup', () => {
       const noTsContext = { ...mockContext, typescript: false };
       vi.mocked(writeFile).mockResolvedValueOnce(undefined);
       vi.mocked(writeFile).mockResolvedValueOnce(undefined);
-      
+
       await setupESLint(noTsContext);
 
       const callArgs = vi.mocked(addDevDependencies).mock.calls[0];
@@ -129,7 +129,7 @@ describe('ESLint Feature Setup', () => {
       const reactContext = { ...mockContext, framework: 'react' as const };
       vi.mocked(writeFile).mockResolvedValueOnce(undefined);
       vi.mocked(writeFile).mockResolvedValueOnce(undefined);
-      
+
       await setupESLint(reactContext);
 
       const callArgs = vi.mocked(addDevDependencies).mock.calls[0];
@@ -142,7 +142,7 @@ describe('ESLint Feature Setup', () => {
       const nextContext = { ...mockContext, framework: 'next' as const };
       vi.mocked(writeFile).mockResolvedValueOnce(undefined);
       vi.mocked(writeFile).mockResolvedValueOnce(undefined);
-      
+
       await setupESLint(nextContext);
 
       const callArgs = vi.mocked(addDevDependencies).mock.calls[0];
@@ -155,26 +155,20 @@ describe('ESLint Feature Setup', () => {
       const tsContext = { ...mockContext, typescript: true };
       vi.mocked(writeFile).mockResolvedValueOnce(undefined);
       vi.mocked(writeFile).mockResolvedValueOnce(undefined);
-      
+
       await setupESLint(tsContext);
 
-      expect(vi.mocked(joinPath)).toHaveBeenCalledWith(
-        expect.any(String),
-        'eslint.config.ts'
-      );
+      expect(vi.mocked(joinPath)).toHaveBeenCalledWith(expect.any(String), 'eslint.config.ts');
     });
 
     it('should create eslint.config.js for non-TypeScript projects', async () => {
       const jsContext = { ...mockContext, typescript: false };
       vi.mocked(writeFile).mockResolvedValueOnce(undefined);
       vi.mocked(writeFile).mockResolvedValueOnce(undefined);
-      
+
       await setupESLint(jsContext);
 
-      expect(vi.mocked(joinPath)).toHaveBeenCalledWith(
-        expect.any(String),
-        'eslint.config.js'
-      );
+      expect(vi.mocked(joinPath)).toHaveBeenCalledWith(expect.any(String), 'eslint.config.js');
     });
 
     it('should include recommended configs', async () => {
@@ -182,7 +176,7 @@ describe('ESLint Feature Setup', () => {
 
       const configCall = vi.mocked(writeFile).mock.calls[0];
       const config = configCall[1] as string;
-      
+
       expect(config).toContain('@eslint/js');
       expect(config).toContain('js.configs.recommended');
     });
@@ -192,7 +186,7 @@ describe('ESLint Feature Setup', () => {
 
       const configCall = vi.mocked(writeFile).mock.calls[0];
       const config = configCall[1] as string;
-      
+
       expect(config).toContain('import/order');
       expect(config).toContain('alphabetize');
     });
@@ -203,12 +197,12 @@ describe('ESLint Feature Setup', () => {
       const standardContext = { ...mockContext, lintingMode: 'standard' as const };
       vi.mocked(writeFile).mockResolvedValueOnce(undefined);
       vi.mocked(writeFile).mockResolvedValueOnce(undefined);
-      
+
       await setupESLint(standardContext);
 
       const configCall = vi.mocked(writeFile).mock.calls[0];
       const config = configCall[1] as string;
-      
+
       expect(config).toContain("'no-console': 'off'");
     });
 
@@ -216,12 +210,12 @@ describe('ESLint Feature Setup', () => {
       const strictContext = { ...mockContext, lintingMode: 'strict' as const };
       vi.mocked(writeFile).mockResolvedValueOnce(undefined);
       vi.mocked(writeFile).mockResolvedValueOnce(undefined);
-      
+
       await setupESLint(strictContext);
 
       const configCall = vi.mocked(writeFile).mock.calls[0];
       const config = configCall[1] as string;
-      
+
       expect(config).toContain("'no-console': ['warn'");
     });
 
@@ -229,12 +223,12 @@ describe('ESLint Feature Setup', () => {
       const reactContext = { ...mockContext, framework: 'react' as const };
       vi.mocked(writeFile).mockResolvedValueOnce(undefined);
       vi.mocked(writeFile).mockResolvedValueOnce(undefined);
-      
+
       await setupESLint(reactContext);
 
       const configCall = vi.mocked(writeFile).mock.calls[0];
       const config = configCall[1] as string;
-      
+
       expect(config).toContain('react-hooks/rules-of-hooks');
       expect(config).toContain('react-hooks/exhaustive-deps');
     });
@@ -243,12 +237,12 @@ describe('ESLint Feature Setup', () => {
       const tsContext = { ...mockContext, typescript: true };
       vi.mocked(writeFile).mockResolvedValueOnce(undefined);
       vi.mocked(writeFile).mockResolvedValueOnce(undefined);
-      
+
       await setupESLint(tsContext);
 
       const configCall = vi.mocked(writeFile).mock.calls[0];
       const config = configCall[1] as string;
-      
+
       expect(config).toContain('@typescript-eslint/no-unused-vars');
       expect(config).toContain('@typescript-eslint/no-explicit-any');
     });
@@ -260,7 +254,7 @@ describe('ESLint Feature Setup', () => {
 
       const scriptCall = vi.mocked(addScripts).mock.calls[0];
       const lintScript = scriptCall[1]['lint'];
-      
+
       expect(lintScript).toContain('.ts');
       expect(lintScript).toContain('.tsx');
       expect(lintScript).toContain('.js');
@@ -272,7 +266,7 @@ describe('ESLint Feature Setup', () => {
 
       const scriptCall = vi.mocked(addScripts).mock.calls[0];
       const lintFixScript = scriptCall[1]['lint:fix'];
-      
+
       expect(lintFixScript).toContain('--fix');
     });
   });
@@ -283,7 +277,7 @@ describe('ESLint Feature Setup', () => {
 
       const ignoreCall = vi.mocked(writeFile).mock.calls[1];
       const ignoreContent = ignoreCall[1] as string;
-      
+
       expect(ignoreContent).toContain('node_modules');
       expect(ignoreContent).toContain('dist');
       expect(ignoreContent).toContain('build');
@@ -296,7 +290,7 @@ describe('ESLint Feature Setup', () => {
 
       const ignoreCall = vi.mocked(writeFile).mock.calls[1];
       const ignoreContent = ignoreCall[1] as string;
-      
+
       expect(ignoreContent).toContain('*.config.js');
       expect(ignoreContent).toContain('*.config.ts');
     });

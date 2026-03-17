@@ -59,9 +59,7 @@ describe('Husky Feature Setup', () => {
     it('should create .husky directory', async () => {
       await setupHusky(mockContext);
 
-      expect(vi.mocked(ensureDir)).toHaveBeenCalledWith(
-        expect.stringContaining('.husky')
-      );
+      expect(vi.mocked(ensureDir)).toHaveBeenCalledWith(expect.stringContaining('.husky'));
     });
 
     it('should create pre-commit hook', async () => {

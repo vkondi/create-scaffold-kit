@@ -1,11 +1,7 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { collectUserInput } from './prompts.js';
 import { logger } from './utils/logger.js';
-import {
-  detectPackageManager,
-  installDependencies,
-  initGit,
-} from './utils/install.js';
+import { detectPackageManager, installDependencies, initGit } from './utils/install.js';
 import { scaffoldReact } from './scaffold/react.js';
 import { scaffoldNext } from './scaffold/next.js';
 import { setupESLint } from './features/eslint.js';
@@ -49,7 +45,7 @@ describe('CLI Main Module', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    
+
     // Setup default mock implementations
     vi.mocked(collectUserInput).mockResolvedValueOnce({
       ...mockContext,
@@ -109,7 +105,7 @@ describe('CLI Main Module', () => {
       vi.mocked(collectUserInput).mockResolvedValueOnce({
         ...contextReact,
       });
-      
+
       expect(vi.mocked(scaffoldReact)).toBeDefined();
     });
 
@@ -121,7 +117,7 @@ describe('CLI Main Module', () => {
       vi.mocked(collectUserInput).mockResolvedValueOnce({
         ...contextReact,
       });
-      
+
       expect(vi.mocked(setupESLint)).toBeDefined();
     });
 
@@ -134,7 +130,7 @@ describe('CLI Main Module', () => {
       vi.mocked(collectUserInput).mockResolvedValueOnce({
         ...contextReact,
       });
-      
+
       expect(vi.mocked(setupTailwind)).toBeDefined();
     });
 
@@ -147,7 +143,7 @@ describe('CLI Main Module', () => {
       vi.mocked(collectUserInput).mockResolvedValueOnce({
         ...contextReact,
       });
-      
+
       expect(vi.mocked(setupTailwind)).toBeDefined();
     });
   });
@@ -161,7 +157,7 @@ describe('CLI Main Module', () => {
       vi.mocked(collectUserInput).mockResolvedValueOnce({
         ...contextNext,
       });
-      
+
       expect(vi.mocked(scaffoldNext)).toBeDefined();
     });
 
@@ -173,7 +169,7 @@ describe('CLI Main Module', () => {
       vi.mocked(collectUserInput).mockResolvedValueOnce({
         ...contextNext,
       });
-      
+
       expect(vi.mocked(setupESLint)).toBeDefined();
     });
 
@@ -188,7 +184,7 @@ describe('CLI Main Module', () => {
       });
       vi.mocked(pathExists).mockResolvedValueOnce(true);
       vi.mocked(joinPath).mockReturnValueOnce('/test/project/tsconfig.json');
-      
+
       expect(vi.mocked(pathExists)).toBeDefined();
     });
   });
@@ -210,7 +206,7 @@ describe('CLI Main Module', () => {
       vi.mocked(collectUserInput).mockResolvedValueOnce({
         ...context,
       });
-      
+
       expect(vi.mocked(setupVitest)).toBeDefined();
     });
 
@@ -222,7 +218,7 @@ describe('CLI Main Module', () => {
       vi.mocked(collectUserInput).mockResolvedValueOnce({
         ...context,
       });
-      
+
       expect(vi.mocked(setupVitest)).toBeDefined();
     });
 
@@ -234,7 +230,7 @@ describe('CLI Main Module', () => {
       vi.mocked(collectUserInput).mockResolvedValueOnce({
         ...context,
       });
-      
+
       expect(vi.mocked(setupDocker)).toBeDefined();
     });
 
@@ -246,7 +242,7 @@ describe('CLI Main Module', () => {
       vi.mocked(collectUserInput).mockResolvedValueOnce({
         ...context,
       });
-      
+
       expect(vi.mocked(setupDocker)).toBeDefined();
     });
 
@@ -258,7 +254,7 @@ describe('CLI Main Module', () => {
       vi.mocked(collectUserInput).mockResolvedValueOnce({
         ...context,
       });
-      
+
       expect(vi.mocked(setupGithubActions)).toBeDefined();
     });
 
@@ -270,7 +266,7 @@ describe('CLI Main Module', () => {
       vi.mocked(collectUserInput).mockResolvedValueOnce({
         ...context,
       });
-      
+
       expect(vi.mocked(setupGithubActions)).toBeDefined();
     });
   });
@@ -294,7 +290,7 @@ describe('CLI Main Module', () => {
       vi.mocked(collectUserInput).mockResolvedValueOnce({
         ...mockContext,
       });
-      
+
       expect(vi.mocked(collectUserInput)).toBeDefined();
     });
   });

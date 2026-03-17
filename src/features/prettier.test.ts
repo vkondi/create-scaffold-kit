@@ -110,7 +110,7 @@ describe('Prettier Feature Setup', () => {
 
       const configCall = vi.mocked(writeFile).mock.calls[0];
       const config = configCall[1];
-      
+
       expect(config).toContain('"semi": true');
       expect(config).toContain('"singleQuote": true');
       expect(config).toContain('"printWidth": 100');
@@ -122,7 +122,7 @@ describe('Prettier Feature Setup', () => {
 
       const configCall = vi.mocked(writeFile).mock.calls[0];
       const config = configCall[1];
-      
+
       expect(config).toContain('"trailingComma": "es5"');
     });
 
@@ -131,7 +131,7 @@ describe('Prettier Feature Setup', () => {
 
       const configCall = vi.mocked(writeFile).mock.calls[0];
       const config = configCall[1];
-      
+
       expect(config).toContain('"endOfLine": "lf"');
     });
 
@@ -140,7 +140,7 @@ describe('Prettier Feature Setup', () => {
 
       const configCall = vi.mocked(writeFile).mock.calls[0];
       const config = configCall[1];
-      
+
       expect(config).toContain('"arrowParens": "always"');
     });
 
@@ -149,7 +149,7 @@ describe('Prettier Feature Setup', () => {
 
       const configCall = vi.mocked(writeFile).mock.calls[0];
       const config = configCall[1];
-      
+
       expect(config).toContain('"bracketSpacing": true');
     });
   });
@@ -160,7 +160,7 @@ describe('Prettier Feature Setup', () => {
 
       const ignoreCall = vi.mocked(writeFile).mock.calls[1];
       const ignoreContent = ignoreCall[1] as string;
-      
+
       expect(ignoreContent).toContain('node_modules');
       expect(ignoreContent).toContain('dist');
       expect(ignoreContent).toContain('coverage');
@@ -172,7 +172,7 @@ describe('Prettier Feature Setup', () => {
 
       const ignoreCall = vi.mocked(writeFile).mock.calls[1];
       const ignoreContent = ignoreCall[1] as string;
-      
+
       expect(ignoreContent).toContain('package-lock.json');
       expect(ignoreContent).toContain('yarn.lock');
       expect(ignoreContent).toContain('pnpm-lock.yaml');
@@ -183,7 +183,7 @@ describe('Prettier Feature Setup', () => {
 
       const ignoreCall = vi.mocked(writeFile).mock.calls[1];
       const ignoreContent = ignoreCall[1] as string;
-      
+
       expect(ignoreContent).toContain('*.min.js');
       expect(ignoreContent).toContain('*.min.css');
     });
@@ -193,7 +193,7 @@ describe('Prettier Feature Setup', () => {
 
       const ignoreCall = vi.mocked(writeFile).mock.calls[1];
       const ignoreContent = ignoreCall[1] as string;
-      
+
       expect(ignoreContent).toContain('public');
     });
   });
@@ -205,7 +205,7 @@ describe('Prettier Feature Setup', () => {
       const scriptCall = vi.mocked(addScripts).mock.calls[0];
       const scripts = scriptCall[1];
       const formatScript = scripts['format'];
-      
+
       expect(formatScript).toContain('ts');
       expect(formatScript).toContain('tsx');
       expect(formatScript).toContain('js');
@@ -220,7 +220,7 @@ describe('Prettier Feature Setup', () => {
 
       const scriptCall = vi.mocked(addScripts).mock.calls[0];
       const scripts = scriptCall[1];
-      
+
       expect(scripts).toHaveProperty('format:check');
       expect(scripts['format:check']).toContain('--check');
     });
@@ -230,7 +230,7 @@ describe('Prettier Feature Setup', () => {
 
       const scriptCall = vi.mocked(addScripts).mock.calls[0];
       const scripts = scriptCall[1];
-      
+
       expect(scripts['format']).toContain('src/**');
     });
   });

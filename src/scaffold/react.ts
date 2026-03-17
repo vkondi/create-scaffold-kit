@@ -9,14 +9,10 @@ export async function scaffoldReact(context: ProjectContext): Promise<void> {
   try {
     // Create Vite project
     const template = context.typescript ? 'react-ts' : 'react';
-    await execa(
-      'yarn',
-      ['create', 'vite', context.projectName, '--', '--template', template],
-      {
-        cwd: process.cwd(),
-        stdio: 'pipe',
-      }
-    );
+    await execa('yarn', ['create', 'vite', context.projectName, '--', '--template', template], {
+      cwd: process.cwd(),
+      stdio: 'pipe',
+    });
 
     logger.success('React project created');
 

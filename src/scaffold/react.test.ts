@@ -26,7 +26,9 @@ describe('React Project Scaffold', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(execa).mockResolvedValue({ isCanceled: false } as unknown as Awaited<ReturnType<typeof execa>>);
+    vi.mocked(execa).mockResolvedValue({ isCanceled: false } as unknown as Awaited<
+      ReturnType<typeof execa>
+    >);
     vi.mocked(logger.step).mockImplementation(() => {});
     vi.mocked(logger.success).mockImplementation(() => {});
     vi.mocked(logger.error).mockImplementation(() => {});
@@ -69,15 +71,9 @@ describe('React Project Scaffold', () => {
     it('should cleanup React boilerplate files', async () => {
       await scaffoldReact(mockContext);
 
-      expect(vi.mocked(removeFile)).toHaveBeenCalledWith(
-        expect.stringContaining('App.css')
-      );
-      expect(vi.mocked(removeFile)).toHaveBeenCalledWith(
-        expect.stringContaining('index.css')
-      );
-      expect(vi.mocked(removeFile)).toHaveBeenCalledWith(
-        expect.stringContaining('vite.svg')
-      );
+      expect(vi.mocked(removeFile)).toHaveBeenCalledWith(expect.stringContaining('App.css'));
+      expect(vi.mocked(removeFile)).toHaveBeenCalledWith(expect.stringContaining('index.css'));
+      expect(vi.mocked(removeFile)).toHaveBeenCalledWith(expect.stringContaining('vite.svg'));
     });
 
     it('should create App component file', async () => {
@@ -103,9 +99,7 @@ describe('React Project Scaffold', () => {
 
       const folders = ['app', 'features', 'shared', 'lib', 'hooks', 'types'];
       for (const folder of folders) {
-        expect(vi.mocked(ensureDir)).toHaveBeenCalledWith(
-          expect.stringContaining(folder)
-        );
+        expect(vi.mocked(ensureDir)).toHaveBeenCalledWith(expect.stringContaining(folder));
       }
     });
 
@@ -178,23 +172,23 @@ describe('React Project Scaffold', () => {
       await scaffoldReact(mockContext);
 
       const calls = vi.mocked(logger.success).mock.calls;
-      expect(calls.some(call => call[0] === 'Feature-based folder structure created')).toBe(true);
+      expect(calls.some((call) => call[0] === 'Feature-based folder structure created')).toBe(true);
     });
 
     it('should log success after path aliases are configured', async () => {
       await scaffoldReact(mockContext);
 
       const calls = vi.mocked(logger.success).mock.calls;
-      expect(calls.some(call => call[0] === 'Path aliases configured')).toBe(true);
+      expect(calls.some((call) => call[0] === 'Path aliases configured')).toBe(true);
     });
 
     it('should configure strict TypeScript with proper options', async () => {
       await scaffoldReact(mockContext);
 
-      const writeCallWithTsconfig = vi.mocked(writeFile).mock.calls.find(call =>
-        call[0].includes('tsconfig.json')
-      );
-      
+      const writeCallWithTsconfig = vi
+        .mocked(writeFile)
+        .mock.calls.find((call) => call[0].includes('tsconfig.json'));
+
       expect(writeCallWithTsconfig).toBeDefined();
       if (writeCallWithTsconfig) {
         const content = writeCallWithTsconfig[1];

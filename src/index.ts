@@ -83,7 +83,9 @@ function displayConfiguration(context: ProjectContext): void {
     );
     logger.info(`  ${chalk.cyan('Tailwind CSS:')} ${context.tailwind ? 'Yes' : 'No'}`);
   } else {
-    logger.info(`  ${chalk.cyan('Note:')} TypeScript, Linter & Tailwind will be configured by create-next-app`);
+    logger.info(
+      `  ${chalk.cyan('Note:')} TypeScript, Linter & Tailwind will be configured by create-next-app`
+    );
   }
 
   logger.info(`  ${chalk.cyan('Testing:')} ${context.testing === 'vitest' ? 'Vitest' : 'None'}`);
