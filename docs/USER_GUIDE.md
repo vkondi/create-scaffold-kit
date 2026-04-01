@@ -5,14 +5,14 @@
 No installation needed. Use `npx`:
 
 ```bash
-npx create-vkondi-app my-app
+npx create-scaffold-kit my-app
 ```
 
 Or with specific package manager:
 ```bash
-yarn create vkondi-app my-app
-npm create vkondi-app my-app
-pnpm create vkondi-app my-app
+yarn create scaffold-kit my-app
+npm create scaffold-kit my-app
+pnpm create scaffold-kit my-app
 ```
 
 ## Basic Usage
@@ -20,7 +20,7 @@ pnpm create vkondi-app my-app
 ### Interactive Mode
 
 ```bash
-npx create-vkondi-app
+npx create-scaffold-kit
 ```
 
 Follow the prompts to configure your project.
@@ -28,7 +28,7 @@ Follow the prompts to configure your project.
 ### With Project Name
 
 ```bash
-npx create-vkondi-app my-app
+npx create-scaffold-kit my-app
 ```
 
 ## Configuration Options
@@ -192,4 +192,4 @@ yarn add zod
 - Include versions when reporting:
   - Node: `node --version`
   - Yarn: `yarn --version`
-  - CLI: `create-vkondi-app --version`
+  - CLI: `create-scaffold-kit --version`

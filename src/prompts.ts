@@ -5,7 +5,7 @@ import { pathExists } from './utils/file.js';
 import path from 'path';
 
 export async function collectUserInput(projectName?: string): Promise<ProjectContext> {
-  logger.info('Welcome to create-vkondi-app! 🚀');
+  logger.info('Welcome to create-scaffold-kit! 🚀');
   logger.newLine();
 
   let questions: PromptObject<string>[] = [];

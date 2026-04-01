@@ -6,7 +6,7 @@ Thank you for your interest in contributing!
 
 ```bash
 git clone <repository-url>
-cd create-vkondi-app
+cd create-scaffold-kit
 yarn install
 yarn build
 yarn link
@@ -15,7 +15,7 @@ yarn link
 Test locally:
 ```bash
 cd /tmp
-create-vkondi-app test-app
+create-scaffold-kit test-app
 ```
 
 For detailed architecture, patterns, and development guidelines, see [Developer Guide](docs/DEVELOPER_GUIDE.md).
@@ -72,7 +72,7 @@ yarn link
 
 # Test in temp directory
 cd /tmp
-create-vkondi-app test-project
+create-scaffold-kit test-project
 
 # Verify generated project
 cd test-project

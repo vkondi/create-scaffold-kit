@@ -232,7 +232,7 @@ describe('Install Utils', () => {
       expect(execa).toHaveBeenCalledWith('git', ['add', '.'], { cwd: '/test/project' });
       expect(execa).toHaveBeenCalledWith(
         'git',
-        ['commit', '-m', 'Initial commit from create-vkondi-app'],
+        ['commit', '-m', 'Initial commit from create-scaffold-kit'],
         {
           cwd: '/test/project',
         }

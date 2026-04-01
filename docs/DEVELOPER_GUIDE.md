@@ -59,7 +59,7 @@ interface ProjectContext {
 
 ```bash
 git clone <repository-url>
-cd create-vkondi-app
+cd create-scaffold-kit
 yarn install
 yarn build
 yarn link
@@ -92,7 +92,7 @@ yarn build
 
 # Test in temp directory
 cd /tmp
-create-vkondi-app test-project
+create-scaffold-kit test-project
 
 # Verify generated project
 cd test-project
@@ -323,7 +323,7 @@ yarn link
 2. Create test project:
 ```bash
 cd /tmp
-create-vkondi-app test-app
+create-scaffold-kit test-app
 ```
 
 3. Verify:
@@ -410,7 +410,7 @@ interface Plugin {
 
 **Command not found:**
 ```bash
-yarn unlink -g create-vkondi-app
+yarn unlink create-scaffold-kit
 yarn link
 ```
 

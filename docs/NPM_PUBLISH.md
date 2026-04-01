@@ -13,12 +13,12 @@
 Confirm `package.json` contains accurate values:
 ```json
 {
-  "name": "create-vkondi-app",
+  "name": "create-scaffold-kit",
   "version": "1.0.0",
   "description": "Scaffold opinionated React or Next.js applications",
   "type": "module",
   "bin": {
-    "create-vkondi-app": "./dist/index.js"
+    "create-scaffold-kit": "./dist/index.js"
   },
   "files": [
     "dist"
@@ -30,7 +30,7 @@ Confirm `package.json` contains accurate values:
   "author": "Vishwajeet Kondi <vishdevwork@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/vkondi/create-vkondi-app"
+    "url": "https://github.com/vkondi/create-scaffold-kit"
   },
   "keywords": [
     "cli",
@@ -60,6 +60,7 @@ tsup.config.ts
 vitest.config.ts
 .eslintrc.json
 .prettierrc.json
+.release-it.json
 CONTRIBUTING.md
 .git
 .github
@@ -91,11 +92,11 @@ yarn link
 
 # Test in a temp directory
 cd /tmp
-yarn link create-vkondi-app
-create-vkondi-app test-app
+yarn link create-scaffold-kit
+create-scaffold-kit test-app
 
 # Unlink when done (run in the temp/consumer directory)
-yarn unlink create-vkondi-app
+yarn unlink create-scaffold-kit
 
 # Unregister globally (run in the package directory)
 yarn unlink
@@ -144,7 +145,7 @@ yarn publish --access public
 ### Verify Installation
 
 ```bash
-npx create-vkondi-app@latest test-verify
+npx create-scaffold-kit@latest test-verify
 ```
 
 ### Update GitHub Release
@@ -153,25 +154,38 @@ Create matching GitHub release (see [GITHUB_PUBLISH.md](./GITHUB_PUBLISH.md))
 
 ## Version Updates
 
-Follow [Semantic Versioning](https://semver.org/):
+Follow [Semantic Versioning](https://semver.org/).
 
-Update `CHANGELOG.md` before bumping the version, then:
+`CHANGELOG.md` is automatically generated from [Conventional Commits](https://www.conventionalcommits.org/) (`feat:`, `fix:`, `chore:`, `docs:`, etc.) via `release-it`.
 
 **Patch (1.0.x)**: Bug fixes
 ```bash
-yarn version patch
-yarn publish
+yarn release:patch
 ```
 
 **Minor (1.x.0)**: New features, backward compatible
 ```bash
-yarn version minor
-yarn publish
+yarn release:minor
 ```
 
 **Major (x.0.0)**: Breaking changes
 ```bash
-yarn version major
+yarn release:major
+```
+
+Or run interactively (prompts for version bump type):
+```bash
+yarn release
+```
+
+Each command will:
+1. Parse commits since the last tag
+2. Update `CHANGELOG.md`
+3. Bump `version` in `package.json`
+4. Create a git commit and tag
+
+After the release commit is created, publish to npm:
+```bash
 yarn publish
 ```
 
@@ -179,7 +193,7 @@ yarn publish
 
 **Package name taken:**
 - Choose different name
-- Or use scoped package: `@username/create-vkondi-app`
+- Or use scoped package: `@username/create-scaffold-kit`
 
 **Authentication failed:**
 ```bash
@@ -194,7 +208,7 @@ yarn login
 **Unpublish (use carefully):**
 ```bash
 # Only within 72 hours of publish
-npm unpublish create-vkondi-app@1.0.0
+npm unpublish create-scaffold-kit@1.0.0
 ```
 
 ## Best Practices

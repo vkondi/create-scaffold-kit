@@ -1,4 +1,4 @@
-# create-vkondi-app
+# create-scaffold-kit
 
 Scaffold opinionated React (Vite) or Next.js applications with best practices baked in.
 
@@ -28,7 +28,7 @@ Scaffold opinionated React (Vite) or Next.js applications with best practices ba
 ## Quick Start
 
 ```bash
-npx create-vkondi-app my-app
+npx create-scaffold-kit my-app
 cd my-app
 yarn install
 yarn dev
@@ -107,7 +107,7 @@ For detailed testing information, see [Testing Guide](docs/TESTING_GUIDE.md)
 
 ## Documentation
 
-- [User Guide](docs/USER_GUIDE.md) - How to use create-vkondi-app
+- [User Guide](docs/USER_GUIDE.md) - How to use create-scaffold-kit
 - [Developer Guide](docs/DEVELOPER_GUIDE.md) - Architecture and extending the CLI
 - [Testing Guide](docs/TESTING_GUIDE.md) - Running and writing tests
 - [NPM Publishing](docs/NPM_PUBLISH.md) - Publish to npm registry

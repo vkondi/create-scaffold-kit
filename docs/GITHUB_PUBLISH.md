@@ -93,7 +93,7 @@ Brief description of major changes.
 ## Installation
 
 \`\`\`bash
-npx create-vkondi-app@latest my-app
+npx create-scaffold-kit@latest my-app
 \`\`\`
 
 ## Full Changelog

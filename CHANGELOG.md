@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2026-02-12
 
 ### Added
-- Initial release of create-vkondi-app
+- Initial release of create-scaffold-kit
 - React (Vite) scaffolding with TypeScript support
 - Next.js scaffolding with App Router
 - ESLint configuration with flat config
@@ -57,4 +57,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GitHub Actions with multi-version testing
 - Full CI/CD pipeline
 
-[1.0.0]: https://github.com/yourusername/create-vkondi-app/releases/tag/v1.0.0
+[1.0.0]: https://github.com/vkondi/create-scaffold-kit/releases/tag/v1.0.0

@@ -8,8 +8,10 @@ coverage
 .turbo
 tsconfig.json
 tsup.config.ts
+vitest.config.ts
 .eslintrc.json
 .prettierrc.json
+.release-it.json
 CONTRIBUTING.md
 .git
 .github

@@ -24,7 +24,7 @@ async function main() {
   console.clear();
 
   program
-    .name('create-vkondi-app')
+    .name('create-scaffold-kit')
     .description('Scaffold opinionated React (Vite) or Next.js applications')
     .version('1.0.0')
     .argument('[project-name]', 'Name of the project')

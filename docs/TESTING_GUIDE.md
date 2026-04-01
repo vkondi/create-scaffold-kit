@@ -1,6 +1,6 @@
-# Testing Guide for create-vkondi-app
+# Testing Guide for create-scaffold-kit
 
-This document provides a comprehensive guide to running and understanding the unit tests for the `create-vkondi-app` CLI tool.
+This document provides a comprehensive guide to running and understanding the unit tests for the `create-scaffold-kit` CLI tool.
 
 ## Table of Contents
 
@@ -306,4 +306,4 @@ yarn test:run --changed
 ---
 
 **Last Updated:** March 2026
-**Maintainer:** create-vkondi-app Team
+**Maintainer:** create-scaffold-kit Team

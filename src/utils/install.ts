@@ -63,7 +63,7 @@ export async function initGit(projectPath: string): Promise<void> {
     await execa('git', ['--version']);
     await execa('git', ['init'], { cwd: projectPath });
     await execa('git', ['add', '.'], { cwd: projectPath });
-    await execa('git', ['commit', '-m', 'Initial commit from create-vkondi-app'], {
+    await execa('git', ['commit', '-m', 'Initial commit from create-scaffold-kit'], {
       cwd: projectPath,
     });
     logger.success('Git repository initialized');
