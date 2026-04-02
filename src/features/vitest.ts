@@ -4,7 +4,7 @@ import { writeFile, joinPath, ensureDir } from '../utils/file.js';
 import { addDevDependencies, addScripts } from '../utils/packageJson.js';
 
 export async function setupVitest(context: ProjectContext): Promise<void> {
-  logger.step('Setting up Vitest...');
+  logger.startSpinner('Setting up Vitest...');
 
   try {
     // Install dependencies
@@ -27,9 +27,9 @@ export async function setupVitest(context: ProjectContext): Promise<void> {
       'test:coverage': 'vitest --coverage',
     });
 
-    logger.success('Vitest configured');
+    logger.succeedSpinner('Vitest configured');
   } catch (error) {
-    logger.error('Failed to setup Vitest');
+    logger.failSpinner('Failed to setup Vitest');
     throw error;
   }
 }

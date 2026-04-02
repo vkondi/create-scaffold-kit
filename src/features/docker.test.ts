@@ -25,9 +25,9 @@ describe('Docker Feature Setup', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(logger.step).mockImplementation(() => {});
-    vi.mocked(logger.success).mockImplementation(() => {});
-    vi.mocked(logger.error).mockImplementation(() => {});
+    vi.mocked(logger.startSpinner).mockImplementation(() => {});
+    vi.mocked(logger.succeedSpinner).mockImplementation(() => {});
+    vi.mocked(logger.failSpinner).mockImplementation(() => {});
     vi.mocked(writeFile).mockResolvedValue(undefined);
     vi.mocked(joinPath).mockImplementation((...args: string[]) => args.join('/'));
   });
@@ -36,8 +36,8 @@ describe('Docker Feature Setup', () => {
     it('should setup Docker successfully', async () => {
       await setupDocker(mockContext);
 
-      expect(vi.mocked(logger.step)).toHaveBeenCalledWith('Setting up Docker...');
-      expect(vi.mocked(logger.success)).toHaveBeenCalledWith('Docker configured');
+      expect(vi.mocked(logger.startSpinner)).toHaveBeenCalledWith('Setting up Docker...');
+      expect(vi.mocked(logger.succeedSpinner)).toHaveBeenCalledWith('Docker configured');
     });
 
     it('should create Dockerfile', async () => {
@@ -63,7 +63,7 @@ describe('Docker Feature Setup', () => {
       vi.mocked(writeFile).mockRejectedValueOnce(error);
 
       await expect(setupDocker(mockContext)).rejects.toThrow('Setup failed');
-      expect(vi.mocked(logger.error)).toHaveBeenCalledWith('Failed to setup Docker');
+      expect(vi.mocked(logger.failSpinner)).toHaveBeenCalledWith('Failed to setup Docker');
     });
   });
 

@@ -30,9 +30,10 @@ describe('React Project Scaffold', () => {
     vi.mocked(execa).mockResolvedValue({ isCanceled: false } as unknown as Awaited<
       ReturnType<typeof execa>
     >);
-    vi.mocked(logger.step).mockImplementation(() => {});
+    vi.mocked(logger.startSpinner).mockImplementation(() => {});
+    vi.mocked(logger.succeedSpinner).mockImplementation(() => {});
+    vi.mocked(logger.failSpinner).mockImplementation(() => {});
     vi.mocked(logger.success).mockImplementation(() => {});
-    vi.mocked(logger.error).mockImplementation(() => {});
     vi.mocked(ensureDir).mockResolvedValue(undefined);
     vi.mocked(writeFile).mockResolvedValue(undefined);
     vi.mocked(removeFile).mockResolvedValue(undefined);
@@ -44,8 +45,10 @@ describe('React Project Scaffold', () => {
     it('should scaffold React project successfully', async () => {
       await scaffoldReact(mockContext);
 
-      expect(vi.mocked(logger.step)).toHaveBeenCalledWith('Creating React (Vite) project...');
-      expect(vi.mocked(logger.success)).toHaveBeenCalledWith('React project created');
+      expect(vi.mocked(logger.startSpinner)).toHaveBeenCalledWith(
+        'Creating React (Vite) project...'
+      );
+      expect(vi.mocked(logger.succeedSpinner)).toHaveBeenCalledWith('React project created');
     });
 
     it('should call execa to create vite project', async () => {
@@ -158,7 +161,7 @@ describe('React Project Scaffold', () => {
       vi.mocked(execa).mockRejectedValueOnce(error);
 
       await expect(scaffoldReact(mockContext)).rejects.toThrow('Scaffold failed');
-      expect(vi.mocked(logger.error)).toHaveBeenCalledWith('Failed to create React project');
+      expect(vi.mocked(logger.failSpinner)).toHaveBeenCalledWith('Failed to create React project');
     });
 
     it('should create JavaScript project without TypeScript', async () => {

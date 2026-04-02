@@ -42,8 +42,7 @@ export async function collectUserInput(projectName?: string): Promise<ProjectCon
   const framework = answers.framework;
   questions = [];
 
-  // Only ask about TypeScript and linting for React
-  // For Next.js, these will be asked by create-next-app itself
+  // Only ask about linting for React (Next.js has its own linter options)
   if (framework === 'react') {
     questions.push(
       {
@@ -69,27 +68,41 @@ export async function collectUserInput(projectName?: string): Promise<ProjectCon
       }
     );
   } else {
-    // For Next.js, set defaults that won't be asked
-    answers.typescript = true; // create-next-app will ask
-    answers.linter = 'eslint'; // default
+    questions.push(
+      {
+        type: 'select' as const,
+        name: 'typescript',
+        message: 'Use TypeScript?',
+        choices: [
+          { title: 'Yes', value: true },
+          { title: 'No', value: false },
+        ],
+        initial: 0,
+      },
+      {
+        type: 'select' as const,
+        name: 'linter',
+        message: 'Select a linter:',
+        choices: [
+          { title: 'ESLint', value: 'eslint' },
+          { title: 'None', value: 'none' },
+        ],
+        initial: 0,
+      }
+    );
   }
 
-  // Always ask about these features
-  // For Next.js, skip Tailwind prompt as create-next-app handles it
-  if (framework === 'react') {
-    questions.push({
-      type: 'select' as const,
-      name: 'tailwind',
-      message: 'Add Tailwind CSS?',
-      choices: [
-        { title: 'Yes', value: true },
-        { title: 'No', value: false },
-      ],
-      initial: 0,
-    });
-  } else {
-    answers.tailwind = false; // Will be handled by create-next-app
-  }
+  // Always ask about Tailwind
+  questions.push({
+    type: 'select' as const,
+    name: 'tailwind',
+    message: 'Add Tailwind CSS?',
+    choices: [
+      { title: 'Yes', value: true },
+      { title: 'No', value: false },
+    ],
+    initial: 0,
+  });
 
   questions.push(
     {

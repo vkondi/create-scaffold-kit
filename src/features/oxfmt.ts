@@ -4,7 +4,7 @@ import { writeFile, joinPath } from '../utils/file.js';
 import { addDevDependencies, addScripts } from '../utils/packageJson.js';
 
 export async function setupOxfmt(context: ProjectContext): Promise<void> {
-  logger.step('Setting up Oxfmt...');
+  logger.startSpinner('Setting up Oxfmt...');
 
   try {
     // Install dependencies
@@ -21,9 +21,9 @@ export async function setupOxfmt(context: ProjectContext): Promise<void> {
       'format:check': 'oxfmt check src/',
     });
 
-    logger.success('Oxfmt configured');
+    logger.succeedSpinner('Oxfmt configured');
   } catch (error) {
-    logger.error('Failed to setup Oxfmt');
+    logger.failSpinner('Failed to setup Oxfmt');
     throw error;
   }
 }

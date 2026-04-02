@@ -97,13 +97,16 @@ describe('Prompts Module', () => {
       expect(result.typescript).toBe(false);
     });
 
-    it('should set TypeScript to true for Next.js by default', async () => {
+    it('should set TypeScript for Next.js based on user input', async () => {
       vi.mocked(prompts)
         .mockResolvedValueOnce({
           projectName: 'next-app',
           framework: 'next',
         })
         .mockResolvedValueOnce({
+          typescript: true,
+          linter: 'eslint',
+          tailwind: false,
           testing: 'vitest',
           formatter: 'prettier',
           githubActions: true,
@@ -141,13 +144,16 @@ describe('Prompts Module', () => {
       expect(result.tailwind).toBe(true);
     });
 
-    it('should not ask about Tailwind for Next.js projects', async () => {
+    it('should ask about Tailwind for Next.js projects', async () => {
       vi.mocked(prompts)
         .mockResolvedValueOnce({
           projectName: 'next-app',
           framework: 'next',
         })
         .mockResolvedValueOnce({
+          typescript: true,
+          linter: 'eslint',
+          tailwind: true,
           testing: 'vitest',
           formatter: 'prettier',
           githubActions: false,
@@ -158,7 +164,7 @@ describe('Prompts Module', () => {
 
       const result = await collectUserInput();
 
-      expect(result.tailwind).toBe(false);
+      expect(result.tailwind).toBe(true);
     });
 
     it('should ask about testing framework and support Vitest', async () => {
@@ -545,6 +551,9 @@ describe('Prompts Module', () => {
           framework: 'next',
         })
         .mockResolvedValueOnce({
+          typescript: true,
+          linter: 'eslint',
+          tailwind: false,
           testing: 'none',
           formatter: 'none',
           githubActions: false,

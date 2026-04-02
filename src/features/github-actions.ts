@@ -3,7 +3,7 @@ import { logger } from '../utils/logger.js';
 import { writeFile, joinPath, ensureDir } from '../utils/file.js';
 
 export async function setupGithubActions(context: ProjectContext): Promise<void> {
-  logger.step('Setting up GitHub Actions...');
+  logger.startSpinner('Setting up GitHub Actions...');
 
   try {
     // Create .github/workflows directory
@@ -13,9 +13,9 @@ export async function setupGithubActions(context: ProjectContext): Promise<void>
     // Create CI workflow
     await createCIWorkflow(context, workflowsDir);
 
-    logger.success('GitHub Actions configured');
+    logger.succeedSpinner('GitHub Actions configured');
   } catch (error) {
-    logger.error('Failed to setup GitHub Actions');
+    logger.failSpinner('Failed to setup GitHub Actions');
     throw error;
   }
 }

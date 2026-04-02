@@ -27,9 +27,9 @@ describe('Oxfmt Feature Setup', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(logger.step).mockImplementation(() => {});
-    vi.mocked(logger.success).mockImplementation(() => {});
-    vi.mocked(logger.error).mockImplementation(() => {});
+    vi.mocked(logger.startSpinner).mockImplementation(() => {});
+    vi.mocked(logger.succeedSpinner).mockImplementation(() => {});
+    vi.mocked(logger.failSpinner).mockImplementation(() => {});
     vi.mocked(writeFile).mockResolvedValue(undefined);
     vi.mocked(joinPath).mockImplementation((...args: string[]) => args.join('/'));
     vi.mocked(addDevDependencies).mockResolvedValue(undefined);
@@ -40,8 +40,8 @@ describe('Oxfmt Feature Setup', () => {
     it('should setup Oxfmt successfully', async () => {
       await setupOxfmt(mockContext);
 
-      expect(vi.mocked(logger.step)).toHaveBeenCalledWith('Setting up Oxfmt...');
-      expect(vi.mocked(logger.success)).toHaveBeenCalledWith('Oxfmt configured');
+      expect(vi.mocked(logger.startSpinner)).toHaveBeenCalledWith('Setting up Oxfmt...');
+      expect(vi.mocked(logger.succeedSpinner)).toHaveBeenCalledWith('Oxfmt configured');
     });
 
     it('should install oxfmt dependency', async () => {
@@ -88,7 +88,7 @@ describe('Oxfmt Feature Setup', () => {
       vi.mocked(addDevDependencies).mockRejectedValueOnce(error);
 
       await expect(setupOxfmt(mockContext)).rejects.toThrow('Setup failed');
-      expect(vi.mocked(logger.error)).toHaveBeenCalledWith('Failed to setup Oxfmt');
+      expect(vi.mocked(logger.failSpinner)).toHaveBeenCalledWith('Failed to setup Oxfmt');
     });
   });
 

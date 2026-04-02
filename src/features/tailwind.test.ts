@@ -27,9 +27,9 @@ describe('Tailwind CSS Feature Setup', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(logger.step).mockImplementation(() => {});
-    vi.mocked(logger.success).mockImplementation(() => {});
-    vi.mocked(logger.error).mockImplementation(() => {});
+    vi.mocked(logger.startSpinner).mockImplementation(() => {});
+    vi.mocked(logger.succeedSpinner).mockImplementation(() => {});
+    vi.mocked(logger.failSpinner).mockImplementation(() => {});
     vi.mocked(writeFile).mockResolvedValue(undefined);
     vi.mocked(joinPath).mockImplementation((...args: string[]) => args.join('/'));
     vi.mocked(addDevDependencies).mockResolvedValue(undefined);
@@ -40,8 +40,8 @@ describe('Tailwind CSS Feature Setup', () => {
     it('should setup Tailwind successfully', async () => {
       await setupTailwind(mockContext);
 
-      expect(vi.mocked(logger.step)).toHaveBeenCalledWith('Setting up Tailwind CSS...');
-      expect(vi.mocked(logger.success)).toHaveBeenCalledWith('Tailwind CSS configured');
+      expect(vi.mocked(logger.startSpinner)).toHaveBeenCalledWith('Setting up Tailwind CSS...');
+      expect(vi.mocked(logger.succeedSpinner)).toHaveBeenCalledWith('Tailwind CSS configured');
     });
 
     it('should install Tailwind dependencies', async () => {
@@ -80,7 +80,7 @@ describe('Tailwind CSS Feature Setup', () => {
       vi.mocked(addDevDependencies).mockRejectedValueOnce(error);
 
       await expect(setupTailwind(mockContext)).rejects.toThrow('Setup failed');
-      expect(vi.mocked(logger.error)).toHaveBeenCalledWith('Failed to setup Tailwind CSS');
+      expect(vi.mocked(logger.failSpinner)).toHaveBeenCalledWith('Failed to setup Tailwind CSS');
     });
   });
 

@@ -4,7 +4,7 @@ import { writeFile, joinPath } from '../utils/file.js';
 import { addDevDependencies, addScripts } from '../utils/packageJson.js';
 
 export async function setupESLint(context: ProjectContext): Promise<void> {
-  logger.step('Setting up ESLint...');
+  logger.startSpinner('Setting up ESLint...');
 
   try {
     // Install dependencies
@@ -23,9 +23,9 @@ export async function setupESLint(context: ProjectContext): Promise<void> {
     // Create .eslintignore
     await createESLintIgnore(context);
 
-    logger.success('ESLint configured');
+    logger.succeedSpinner('ESLint configured');
   } catch (error) {
-    logger.error('Failed to setup ESLint');
+    logger.failSpinner('Failed to setup ESLint');
     throw error;
   }
 }

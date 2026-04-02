@@ -4,7 +4,7 @@ import { logger } from '../utils/logger.js';
 import { writeFile, joinPath, pathExists } from '../utils/file.js';
 
 export async function scaffoldNext(context: ProjectContext): Promise<void> {
-  logger.step('Creating Next.js project...');
+  logger.startSpinner('Creating Next.js project...');
 
   try {
     const args = [
@@ -12,8 +12,13 @@ export async function scaffoldNext(context: ProjectContext): Promise<void> {
       context.projectName,
       '--',
       '--app',
-      '--use-yarn',
       '--no-git',
+      context.typescript ? '--ts' : '--js',
+      context.tailwind ? '--tailwind' : '--no-tailwind',
+      context.linter === 'eslint' ? '--eslint' : '--no-eslint',
+      '--no-src-dir',
+      '--import-alias',
+      '@/*',
     ];
 
     // Let create-next-app ask for TypeScript, linter, and other interactive prompts
@@ -23,7 +28,7 @@ export async function scaffoldNext(context: ProjectContext): Promise<void> {
       stdio: 'inherit',
     });
 
-    logger.success('Next.js project created');
+    logger.succeedSpinner('Next.js project created');
 
     // Detect if TypeScript was chosen by create-next-app
     const detectTypeScript = async (): Promise<boolean> => {
@@ -41,7 +46,7 @@ export async function scaffoldNext(context: ProjectContext): Promise<void> {
     // Update Next.js config
     await updateNextConfig(context, usesTypeScript);
   } catch (error) {
-    logger.error('Failed to create Next.js project');
+    logger.failSpinner('Failed to create Next.js project');
     throw error;
   }
 }

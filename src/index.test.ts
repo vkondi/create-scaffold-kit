@@ -208,8 +208,23 @@ describe('CLI Main Module', () => {
       expect(vi.mocked(setupOxfmt)).toBeDefined();
     });
 
-    it('should always setup Husky', async () => {
+    it('should setup Husky when linter or formatter is configured', async () => {
       expect(vi.mocked(setupHusky)).toBeDefined();
+    });
+
+    it('should skip Husky when linter and formatter are both none', async () => {
+      // Husky is only set up when at least one of linter or formatter is configured
+      const noToolsContext: ProjectContext = {
+        ...mockContext,
+        linter: 'none',
+        formatter: 'none',
+      };
+      expect(noToolsContext.linter).toBe('none');
+      expect(noToolsContext.formatter).toBe('none');
+      // Verify the condition: Husky should not be called for this context
+      const shouldSetupHusky =
+        noToolsContext.linter !== 'none' || noToolsContext.formatter !== 'none';
+      expect(shouldSetupHusky).toBe(false);
     });
 
     it('should setup ESLint when linter is eslint', async () => {

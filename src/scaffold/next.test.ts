@@ -30,9 +30,10 @@ describe('Next.js Project Scaffold', () => {
     vi.mocked(execa).mockResolvedValue({ isCanceled: false } as unknown as Awaited<
       ReturnType<typeof execa>
     >);
-    vi.mocked(logger.step).mockImplementation(() => {});
+    vi.mocked(logger.startSpinner).mockImplementation(() => {});
+    vi.mocked(logger.succeedSpinner).mockImplementation(() => {});
+    vi.mocked(logger.failSpinner).mockImplementation(() => {});
     vi.mocked(logger.success).mockImplementation(() => {});
-    vi.mocked(logger.error).mockImplementation(() => {});
     vi.mocked(writeFile).mockResolvedValue(undefined);
     vi.mocked(pathExists).mockResolvedValue(true);
     vi.mocked(joinPath).mockImplementation((...args: string[]) => args.join('/'));
@@ -42,8 +43,8 @@ describe('Next.js Project Scaffold', () => {
     it('should scaffold Next.js project successfully', async () => {
       await scaffoldNext(mockContext);
 
-      expect(vi.mocked(logger.step)).toHaveBeenCalledWith('Creating Next.js project...');
-      expect(vi.mocked(logger.success)).toHaveBeenCalledWith('Next.js project created');
+      expect(vi.mocked(logger.startSpinner)).toHaveBeenCalledWith('Creating Next.js project...');
+      expect(vi.mocked(logger.succeedSpinner)).toHaveBeenCalledWith('Next.js project created');
     });
 
     it('should call execa to create next project', async () => {
@@ -56,8 +57,13 @@ describe('Next.js Project Scaffold', () => {
           mockContext.projectName,
           '--',
           '--app',
-          '--use-yarn',
           '--no-git',
+          '--ts',
+          '--tailwind',
+          '--eslint',
+          '--no-src-dir',
+          '--import-alias',
+          '@/*',
         ],
         expect.any(Object)
       );
@@ -148,7 +154,9 @@ describe('Next.js Project Scaffold', () => {
       vi.mocked(execa).mockRejectedValueOnce(error);
 
       await expect(scaffoldNext(mockContext)).rejects.toThrow('Setup failed');
-      expect(vi.mocked(logger.error)).toHaveBeenCalledWith('Failed to create Next.js project');
+      expect(vi.mocked(logger.failSpinner)).toHaveBeenCalledWith(
+        'Failed to create Next.js project'
+      );
     });
 
     it('should log success after TypeScript configuration', async () => {

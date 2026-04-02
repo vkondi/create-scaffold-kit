@@ -25,9 +25,9 @@ describe('GitHub Actions Feature Setup', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(logger.step).mockImplementation(() => {});
-    vi.mocked(logger.success).mockImplementation(() => {});
-    vi.mocked(logger.error).mockImplementation(() => {});
+    vi.mocked(logger.startSpinner).mockImplementation(() => {});
+    vi.mocked(logger.succeedSpinner).mockImplementation(() => {});
+    vi.mocked(logger.failSpinner).mockImplementation(() => {});
     vi.mocked(writeFile).mockResolvedValue(undefined);
     vi.mocked(joinPath).mockImplementation((...args: string[]) => args.join('/'));
     vi.mocked(ensureDir).mockResolvedValue(undefined);
@@ -37,8 +37,8 @@ describe('GitHub Actions Feature Setup', () => {
     it('should setup GitHub Actions successfully', async () => {
       await setupGithubActions(mockContext);
 
-      expect(vi.mocked(logger.step)).toHaveBeenCalledWith('Setting up GitHub Actions...');
-      expect(vi.mocked(logger.success)).toHaveBeenCalledWith('GitHub Actions configured');
+      expect(vi.mocked(logger.startSpinner)).toHaveBeenCalledWith('Setting up GitHub Actions...');
+      expect(vi.mocked(logger.succeedSpinner)).toHaveBeenCalledWith('GitHub Actions configured');
     });
 
     it('should create .github/workflows directory', async () => {
@@ -63,7 +63,7 @@ describe('GitHub Actions Feature Setup', () => {
       vi.mocked(ensureDir).mockRejectedValueOnce(error);
 
       await expect(setupGithubActions(mockContext)).rejects.toThrow('Setup failed');
-      expect(vi.mocked(logger.error)).toHaveBeenCalledWith('Failed to setup GitHub Actions');
+      expect(vi.mocked(logger.failSpinner)).toHaveBeenCalledWith('Failed to setup GitHub Actions');
     });
   });
 

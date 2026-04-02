@@ -86,9 +86,10 @@ function displayConfiguration(context: ProjectContext): void {
     logger.info(`  ${chalk.cyan('Linter:')} ${linterLabel}`);
     logger.info(`  ${chalk.cyan('Tailwind CSS:')} ${context.tailwind ? 'Yes' : 'No'}`);
   } else {
-    logger.info(
-      `  ${chalk.cyan('Note:')} TypeScript, Linter & Tailwind will be configured by create-next-app`
-    );
+    logger.info(`  ${chalk.cyan('TypeScript:')} ${context.typescript ? 'Yes' : 'No'}`);
+    const linterLabel = context.linter === 'eslint' ? 'ESLint' : 'None';
+    logger.info(`  ${chalk.cyan('Linter:')} ${linterLabel}`);
+    logger.info(`  ${chalk.cyan('Tailwind CSS:')} ${context.tailwind ? 'Yes' : 'No'}`);
   }
 
   const testingLabel =
@@ -141,8 +142,10 @@ async function setupFeatures(context: ProjectContext): Promise<void> {
     await setupOxfmt(context);
   }
 
-  // Husky for git hooks
-  await setupHusky(context);
+  // Husky for git hooks - only useful when a linter or formatter is configured
+  if (context.linter !== 'none' || context.formatter !== 'none') {
+    await setupHusky(context);
+  }
 
   // Tailwind CSS - skip for Next.js as create-next-app handles it
   if (context.tailwind && context.framework === 'react') {

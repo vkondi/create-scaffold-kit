@@ -4,7 +4,7 @@ import { writeFile, joinPath, ensureDir } from '../utils/file.js';
 import { addDevDependencies, addScripts } from '../utils/packageJson.js';
 
 export async function setupJest(context: ProjectContext): Promise<void> {
-  logger.step('Setting up Jest...');
+  logger.startSpinner('Setting up Jest...');
 
   try {
     // Install dependencies
@@ -27,9 +27,9 @@ export async function setupJest(context: ProjectContext): Promise<void> {
       'test:coverage': 'jest --coverage',
     });
 
-    logger.success('Jest configured');
+    logger.succeedSpinner('Jest configured');
   } catch (error) {
-    logger.error('Failed to setup Jest');
+    logger.failSpinner('Failed to setup Jest');
     throw error;
   }
 }

@@ -4,7 +4,7 @@ import { writeFile, joinPath, ensureDir } from '../utils/file.js';
 import { addDevDependencies, addScripts } from '../utils/packageJson.js';
 
 export async function setupHusky(context: ProjectContext): Promise<void> {
-  logger.step('Setting up Husky and lint-staged...');
+  logger.startSpinner('Setting up Husky and lint-staged...');
 
   try {
     // Install dependencies
@@ -24,9 +24,9 @@ export async function setupHusky(context: ProjectContext): Promise<void> {
     // Create husky hooks (will be created after yarn install)
     await createHuskyHooks(context);
 
-    logger.success('Husky configured');
+    logger.succeedSpinner('Husky configured');
   } catch (error) {
-    logger.error('Failed to setup Husky');
+    logger.failSpinner('Failed to setup Husky');
     throw error;
   }
 }

@@ -4,7 +4,7 @@ import { writeFile, joinPath } from '../utils/file.js';
 import { addDevDependencies } from '../utils/packageJson.js';
 
 export async function setupTailwind(context: ProjectContext): Promise<void> {
-  logger.step('Setting up Tailwind CSS...');
+  logger.startSpinner('Setting up Tailwind CSS...');
 
   try {
     // Install dependencies
@@ -23,9 +23,9 @@ export async function setupTailwind(context: ProjectContext): Promise<void> {
     // Update CSS files
     await updateCSSFiles(context);
 
-    logger.success('Tailwind CSS configured');
+    logger.succeedSpinner('Tailwind CSS configured');
   } catch (error) {
-    logger.error('Failed to setup Tailwind CSS');
+    logger.failSpinner('Failed to setup Tailwind CSS');
     throw error;
   }
 }

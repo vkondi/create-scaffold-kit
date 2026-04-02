@@ -27,9 +27,9 @@ describe('Oxlint Feature Setup', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(logger.step).mockImplementation(() => {});
-    vi.mocked(logger.success).mockImplementation(() => {});
-    vi.mocked(logger.error).mockImplementation(() => {});
+    vi.mocked(logger.startSpinner).mockImplementation(() => {});
+    vi.mocked(logger.succeedSpinner).mockImplementation(() => {});
+    vi.mocked(logger.failSpinner).mockImplementation(() => {});
     vi.mocked(writeFile).mockResolvedValue(undefined);
     vi.mocked(joinPath).mockImplementation((...args: string[]) => args.join('/'));
     vi.mocked(addDevDependencies).mockResolvedValue(undefined);
@@ -40,8 +40,8 @@ describe('Oxlint Feature Setup', () => {
     it('should setup Oxlint successfully', async () => {
       await setupOxlint(mockContext);
 
-      expect(vi.mocked(logger.step)).toHaveBeenCalledWith('Setting up Oxlint...');
-      expect(vi.mocked(logger.success)).toHaveBeenCalledWith('Oxlint configured');
+      expect(vi.mocked(logger.startSpinner)).toHaveBeenCalledWith('Setting up Oxlint...');
+      expect(vi.mocked(logger.succeedSpinner)).toHaveBeenCalledWith('Oxlint configured');
     });
 
     it('should install oxlint dependency', async () => {
@@ -88,7 +88,7 @@ describe('Oxlint Feature Setup', () => {
       vi.mocked(addDevDependencies).mockRejectedValueOnce(error);
 
       await expect(setupOxlint(mockContext)).rejects.toThrow('Setup failed');
-      expect(vi.mocked(logger.error)).toHaveBeenCalledWith('Failed to setup Oxlint');
+      expect(vi.mocked(logger.failSpinner)).toHaveBeenCalledWith('Failed to setup Oxlint');
     });
   });
 

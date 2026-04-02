@@ -4,7 +4,7 @@ import { writeFile, joinPath } from '../utils/file.js';
 import { addDevDependencies, addScripts } from '../utils/packageJson.js';
 
 export async function setupPrettier(context: ProjectContext): Promise<void> {
-  logger.step('Setting up Prettier...');
+  logger.startSpinner('Setting up Prettier...');
 
   try {
     // Install dependencies
@@ -26,9 +26,9 @@ export async function setupPrettier(context: ProjectContext): Promise<void> {
       'format:check': 'prettier --check "src/**/*.{ts,tsx,js,jsx,json,css,md}"',
     });
 
-    logger.success('Prettier configured');
+    logger.succeedSpinner('Prettier configured');
   } catch (error) {
-    logger.error('Failed to setup Prettier');
+    logger.failSpinner('Failed to setup Prettier');
     throw error;
   }
 }

@@ -3,7 +3,7 @@ import { logger } from '../utils/logger.js';
 import { writeFile, joinPath } from '../utils/file.js';
 
 export async function setupDocker(context: ProjectContext): Promise<void> {
-  logger.step('Setting up Docker...');
+  logger.startSpinner('Setting up Docker...');
 
   try {
     // Create Dockerfile
@@ -12,9 +12,9 @@ export async function setupDocker(context: ProjectContext): Promise<void> {
     // Create .dockerignore
     await createDockerignore(context);
 
-    logger.success('Docker configured');
+    logger.succeedSpinner('Docker configured');
   } catch (error) {
-    logger.error('Failed to setup Docker');
+    logger.failSpinner('Failed to setup Docker');
     throw error;
   }
 }

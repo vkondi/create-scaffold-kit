@@ -27,9 +27,9 @@ describe('Prettier Feature Setup', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(logger.step).mockImplementation(() => {});
-    vi.mocked(logger.success).mockImplementation(() => {});
-    vi.mocked(logger.error).mockImplementation(() => {});
+    vi.mocked(logger.startSpinner).mockImplementation(() => {});
+    vi.mocked(logger.succeedSpinner).mockImplementation(() => {});
+    vi.mocked(logger.failSpinner).mockImplementation(() => {});
     vi.mocked(writeFile).mockResolvedValue(undefined);
     vi.mocked(joinPath).mockImplementation((...args) => args.join('/'));
     vi.mocked(addDevDependencies).mockResolvedValue(undefined);
@@ -40,7 +40,7 @@ describe('Prettier Feature Setup', () => {
     it('should setup Prettier successfully', async () => {
       await setupPrettier(mockContext);
 
-      expect(vi.mocked(logger.step)).toHaveBeenCalledWith('Setting up Prettier...');
+      expect(vi.mocked(logger.startSpinner)).toHaveBeenCalledWith('Setting up Prettier...');
       expect(vi.mocked(addDevDependencies)).toHaveBeenCalledWith(
         mockContext.projectPath,
         expect.objectContaining({
@@ -84,7 +84,7 @@ describe('Prettier Feature Setup', () => {
     it('should log success message', async () => {
       await setupPrettier(mockContext);
 
-      expect(vi.mocked(logger.success)).toHaveBeenCalledWith('Prettier configured');
+      expect(vi.mocked(logger.succeedSpinner)).toHaveBeenCalledWith('Prettier configured');
     });
 
     it('should handle setup errors', async () => {
@@ -92,7 +92,7 @@ describe('Prettier Feature Setup', () => {
       vi.mocked(addDevDependencies).mockRejectedValueOnce(error);
 
       await expect(setupPrettier(mockContext)).rejects.toThrow('Setup failed');
-      expect(vi.mocked(logger.error)).toHaveBeenCalledWith('Failed to setup Prettier');
+      expect(vi.mocked(logger.failSpinner)).toHaveBeenCalledWith('Failed to setup Prettier');
     });
 
     it('should add required Prettier dependencies', async () => {

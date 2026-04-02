@@ -23,7 +23,7 @@ function buildCreateViteCommand(
 }
 
 export async function scaffoldReact(context: ProjectContext): Promise<void> {
-  logger.step('Creating React (Vite) project...');
+  logger.startSpinner('Creating React (Vite) project...');
 
   try {
     // Create Vite project
@@ -38,7 +38,7 @@ export async function scaffoldReact(context: ProjectContext): Promise<void> {
       stdio: 'pipe',
     });
 
-    logger.success('React project created');
+    logger.succeedSpinner('React project created');
 
     // Clean up boilerplate
     await cleanupReactBoilerplate(context);
@@ -54,7 +54,7 @@ export async function scaffoldReact(context: ProjectContext): Promise<void> {
       await configureStrictTypeScript(context);
     }
   } catch (error) {
-    logger.error('Failed to create React project');
+    logger.failSpinner('Failed to create React project');
     throw error;
   }
 }

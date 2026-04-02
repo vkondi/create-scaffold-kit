@@ -27,9 +27,9 @@ describe('Husky Feature Setup', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(logger.step).mockImplementation(() => {});
-    vi.mocked(logger.success).mockImplementation(() => {});
-    vi.mocked(logger.error).mockImplementation(() => {});
+    vi.mocked(logger.startSpinner).mockImplementation(() => {});
+    vi.mocked(logger.succeedSpinner).mockImplementation(() => {});
+    vi.mocked(logger.failSpinner).mockImplementation(() => {});
     vi.mocked(logger.info).mockImplementation(() => {});
     vi.mocked(writeFile).mockResolvedValue(undefined);
     vi.mocked(joinPath).mockImplementation((...args: string[]) => args.join('/'));
@@ -42,8 +42,10 @@ describe('Husky Feature Setup', () => {
     it('should setup Husky successfully', async () => {
       await setupHusky(mockContext);
 
-      expect(vi.mocked(logger.step)).toHaveBeenCalledWith('Setting up Husky and lint-staged...');
-      expect(vi.mocked(logger.success)).toHaveBeenCalledWith('Husky configured');
+      expect(vi.mocked(logger.startSpinner)).toHaveBeenCalledWith(
+        'Setting up Husky and lint-staged...'
+      );
+      expect(vi.mocked(logger.succeedSpinner)).toHaveBeenCalledWith('Husky configured');
     });
 
     it('should install Husky dependency', async () => {
@@ -77,7 +79,7 @@ describe('Husky Feature Setup', () => {
       vi.mocked(addDevDependencies).mockRejectedValueOnce(error);
 
       await expect(setupHusky(mockContext)).rejects.toThrow('Setup failed');
-      expect(vi.mocked(logger.error)).toHaveBeenCalledWith('Failed to setup Husky');
+      expect(vi.mocked(logger.failSpinner)).toHaveBeenCalledWith('Failed to setup Husky');
     });
   });
 

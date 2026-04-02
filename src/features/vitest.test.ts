@@ -27,9 +27,9 @@ describe('Vitest Feature Setup', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(logger.step).mockImplementation(() => {});
-    vi.mocked(logger.success).mockImplementation(() => {});
-    vi.mocked(logger.error).mockImplementation(() => {});
+    vi.mocked(logger.startSpinner).mockImplementation(() => {});
+    vi.mocked(logger.succeedSpinner).mockImplementation(() => {});
+    vi.mocked(logger.failSpinner).mockImplementation(() => {});
     vi.mocked(writeFile).mockResolvedValue(undefined);
     vi.mocked(joinPath).mockImplementation((...args: string[]) => args.join('/'));
     vi.mocked(addDevDependencies).mockResolvedValue(undefined);
@@ -40,8 +40,8 @@ describe('Vitest Feature Setup', () => {
     it('should setup Vitest successfully', async () => {
       await setupVitest(mockContext);
 
-      expect(vi.mocked(logger.step)).toHaveBeenCalledWith('Setting up Vitest...');
-      expect(vi.mocked(logger.success)).toHaveBeenCalledWith('Vitest configured');
+      expect(vi.mocked(logger.startSpinner)).toHaveBeenCalledWith('Setting up Vitest...');
+      expect(vi.mocked(logger.succeedSpinner)).toHaveBeenCalledWith('Vitest configured');
     });
 
     it('should install Vitest dependencies', async () => {
@@ -82,7 +82,7 @@ describe('Vitest Feature Setup', () => {
       vi.mocked(addDevDependencies).mockRejectedValueOnce(error);
 
       await expect(setupVitest(mockContext)).rejects.toThrow('Setup failed');
-      expect(vi.mocked(logger.error)).toHaveBeenCalledWith('Failed to setup Vitest');
+      expect(vi.mocked(logger.failSpinner)).toHaveBeenCalledWith('Failed to setup Vitest');
     });
   });
 

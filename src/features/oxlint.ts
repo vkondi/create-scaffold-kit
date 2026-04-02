@@ -4,7 +4,7 @@ import { writeFile, joinPath } from '../utils/file.js';
 import { addDevDependencies, addScripts } from '../utils/packageJson.js';
 
 export async function setupOxlint(context: ProjectContext): Promise<void> {
-  logger.step('Setting up Oxlint...');
+  logger.startSpinner('Setting up Oxlint...');
 
   try {
     // Install dependencies
@@ -21,9 +21,9 @@ export async function setupOxlint(context: ProjectContext): Promise<void> {
       'lint:fix': 'oxlint --fix src/',
     });
 
-    logger.success('Oxlint configured');
+    logger.succeedSpinner('Oxlint configured');
   } catch (error) {
-    logger.error('Failed to setup Oxlint');
+    logger.failSpinner('Failed to setup Oxlint');
     throw error;
   }
 }
