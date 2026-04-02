@@ -78,11 +78,11 @@ The package maintains two separate README files:
 | File | Purpose |
 |---|---|
 | `README.md` | Shown on GitHub — includes architecture details, development setup, and links to `docs/` |
-| `README.npm.md` | Shown on npm — user-focused: install commands, features table, CLI options |
+| `npm-readme.md` | Shown on npm — user-focused: install commands, features table, CLI options |
 
 The swap happens automatically via npm lifecycle hooks — no manual steps required:
 
-1. **`prepack`** (`scripts/prepack.cjs`) — backs up `README.md` → `README.github.md`, copies `README.npm.md` → `README.md`
+1. **`prepack`** (`scripts/prepack.cjs`) — backs up `README.md` → `README.github.md`, copies `npm-readme.md` → `README.md`
 2. Tarball is created with the npm README as `README.md`
 3. **`postpack`** (`scripts/postpack.cjs`) — restores `README.md` from `README.github.md`, deletes the backup
 

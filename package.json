@@ -4,7 +4,7 @@
   "description": "Scaffold opinionated React or Next.js applications",
   "type": "module",
   "bin": {
-    "create-scaffold-kit": "./dist/index.js"
+    "create-scaffold-kit": "dist/index.js"
   },
   "files": [
     "dist"
@@ -44,7 +44,7 @@
   "author": "Vishwajeet Kondi <vishdevwork@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/vkondi/create-scaffold-kit"
+    "url": "git+https://github.com/vkondi/create-scaffold-kit.git"
   },
   "license": "MIT",
   "engines": {

@@ -110,7 +110,7 @@ Build and lifecycle scripts live in the `scripts/` folder rather than inline in 
 
 | File | Invoked by | Purpose |
 |---|---|---|
-| `scripts/prepack.cjs` | `prepack` hook | Swaps `README.md` with `README.npm.md` before the tarball is created |
+| `scripts/prepack.cjs` | `prepack` hook | Swaps `README.md` with `npm-readme.md` before the tarball is created |
 | `scripts/postpack.cjs` | `postpack` hook | Restores `README.md` after the tarball is created |
 
 `prepack` and `postpack` are standard npm lifecycle hooks — they run automatically before/after `npm pack`, `npm publish`, and `yarn publish`. No manual invocation is needed.
