@@ -58,6 +58,9 @@
     "ora": "^9.3.0",
     "prompts": "^2.4.2"
   },
+  "resolutions": {
+    "undici": ">=6.24.0"
+  },
   "devDependencies": {
     "@release-it/conventional-changelog": "^10.0.6",
     "@types/fs-extra": "^11.0.4",
