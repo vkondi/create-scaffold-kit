@@ -59,7 +59,8 @@
     "prompts": "^2.4.2"
   },
   "resolutions": {
-    "undici": ">=6.24.0"
+    "undici": ">=6.24.0",
+    "picomatch": ">=2.3.2"
   },
   "devDependencies": {
     "@release-it/conventional-changelog": "^10.0.6",
