@@ -1,5 +1,8 @@
 name: Publish
 
+permissions:
+  contents: read
+
 on:
   release:
     types: [published]
@@ -115,6 +118,7 @@ jobs:
     needs: [build]
     environment: npm-publish
     permissions:
+      contents: read
       id-token: write # Required for OIDC Trusted Publishing
 
     steps:
